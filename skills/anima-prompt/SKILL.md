@@ -1,7 +1,7 @@
 ---
 name: anima-prompt
 description: |
-  Anima（circlestone-labs/Anima）向けの最適化されたプロンプトを生成するスキル。1〜2人のキャラクターに対応。
+  Anima（circlestone-labs/Anima）向けの最適化されたプロンプトを生成するスキル。人数の制限なく、位置ごとにキャラクターを描き分ける。
   トリガー: "anima-prompt", "/anima-prompt", "animaプロンプト", "Animaのプロンプト生成", "anima prompt"
   使用場面: (1) Animaモデルで画像を生成する前にプロンプトを作りたいとき、(2) 複数キャラクターの構成を整理したいとき、(3) タグ構造がわからないとき
 ---
@@ -24,11 +24,25 @@ python skills/anima-prompt/scripts/tag_search.py "青い目" --limit 5
 
 ## Anima プロンプト規則（厳守）
 
-### タグ構造（固定順序）
+### プロンプト構造（固定順序）
+
+全体シーンを1文で述べ、そのあと各キャラクターを「位置ブロック」に分けて記述する。**インデントは意味のある構造なので必ず入れる**（キャラブロック内は半角スペース4つ）。
 
 ```
-[quality/meta/year/safe] [count] [character+appearance] [series] [artist] [style] [tags] [environment] [nltags]
+<quality, meta, year, safe>,
+<count>,
+<全体シーンを述べる1文>
+<位置語>,
+    <そのキャラを述べる1文（外見 + 服装 + 動作）>
+    <対応する Danbooru タグ列>,
+<位置語>,
+    <...>            ← キャラの数だけ繰り返す
+<@artist>, <style>,
+<camera, composition>,
+<environment, lighting>
 ```
+
+キャラクターの人数に上限はない。ただし人数が増えるほど属性の混線が起きやすくなる（後述）。
 
 ### タグ記法
 
@@ -57,6 +71,8 @@ masterpiece, best quality, score_9, score_8, score_7, highres, newest, year 2025
 | `explicit` | 強い成人向け方向 |
 
 ### キャラクター外見の記述（上から下へ）
+
+キャラブロックのタグ列はこの順に並べる。自然文側も概ねこの順に沿わせる。
 
 ```
 skin/ears/horns/halo/wings,
@@ -93,32 +109,37 @@ left hand holding a plate, right hand making a v sign beside her face, both hand
 exactly four fingers on each hand, four digits on each hand, thumb and three fingers, no fifth finger
 ```
 
-### 複数キャラクターの描き分け（重要）
+### キャラクターの描き分け（重要）
 
-- **3人まで**は適切な書き方で安定（5人も可能だが試行錯誤が必要）
+複数キャラクターの最大の失敗要因は**属性の混線**（片方の髪色がもう片方に移るなど）。これを防ぐのが位置ブロック構造の目的。
+
+- 人数タグを品質タグの直後に必ず明示する
+- キャラクターごとに「**位置語 + 1文の説明 + タグ列**」を一塊にし、他のキャラの記述を挟まない
 - キャラクターを区別する属性が**対照的**（黒髪×金髪など）な方が安定
-- 人数タグを品質タグの直後に必ず明示
-- キャラクターごとに「**位置 + 外見 + 動作**」を一塊で記述
-- ネガティブに `duplicate, twins, clone` を追加
+- **3人までは安定**。4人以上は可能だが試行錯誤が必要
+- 複数キャラの場合はネガティブに `duplicate, twins, clone` を追加
 
-**位置指定**:
-- 左右: `On the left`, `On the right`
-- 奥行き: `in the foreground`, `in the background`
+**位置語**: 各キャラブロックの見出しになる。人数と構図に応じて選ぶ。
 
-**タグ形式**:
+| 構図 | 位置語 |
+|---|---|
+| 2人 | `On the left,` / `On the right,` |
+| 3人 | `On the left,` / `In the center,` / `On the right,` |
+| 4人以上 | `On the far left,` / `Second from the left,` / `Second from the right,` / `On the far right,` |
+| 奥行き | `In the foreground,` / `In the background,` |
+| 1人 | 位置語は使わない（全体シーン文の直後にキャラブロックを置く） |
+
+**キャラブロックの中身**: 1行目が自然文、2行目が Danbooru タグ列。両方をインデントして、どのキャラに属する記述かを視覚的に固定する。
+
 ```
-2girls, duo, holding each other's hands,
-
-angel girl, red halo, long white hair, red eyes, red angel wings, black sundress,
-devil girl, white horns, long black hair, blue eyes, blue demon wings, white sundress,
-
-floating in midair, bodies facing each other
+On the left,
+    a lively girl with short black hair wearing a red bomber jacket looks slightly confused at her notebook.
+    1girl, short hair, black hair, red jacket, bomber jacket, confused, holding notebook,
 ```
 
-**自然言語形式（位置起点）**:
-```
-2girls. On the left is a girl with long black hair and blue eyes, wearing a dark blazer. On the right is a girl with short blonde hair and red eyes, wearing a white blouse.
-```
+- 自然文は「印象 + 髪 + 服 + 動作」の順。タグにない語彙（`ash blonde`、素材や質感の説明など）はここで自由に書いてよい
+- タグ列は自然文の内容を Danbooru 語彙に写したもの。**先頭に `1girl` / `1boy` を置いて所属を明示する**
+- タグ列は自然文の言い換えであり、矛盾させない
 
 ### カメラ・構図
 
@@ -145,14 +166,17 @@ beach, beach waves, orange sky, sparkling sea surface, wet sand, palm trees, sun
 backlighting, rim light, lens flare, depth of field, bokeh, volumetric lighting
 ```
 
-### 自然言語補助（nltags）
+### 全体シーン文
 
-タグで表現できない複雑な場面を最後の1文で補助する（**最大1文、安易に使わない**）:
+人数タグの直後に置く**必須要素**。「誰が・どこで・何をしているか」を1文で述べ、後続の位置ブロックの土台にする:
 ```
-A blonde woman kneels in shallow beach water while her white dress flows with the waves.
+Three characters are studying together at a wooden table inside a quiet library.
 ```
 
-タグと自然言語の間で改行を入れない（追従性が落ちる）。
+- **1文に収める**。ここで各キャラの外見を書き込まない（それは位置ブロックの仕事）
+- 場所・全体の行為・空気感までにとどめる
+
+自然文とタグ列は隣接させ、**間に空行を入れない**（空行が入ると追従性が落ちる）。改行とインデントは構造として必要なので入れてよい。
 
 ### ネガティブプロンプト
 
@@ -173,22 +197,23 @@ $ARGUMENTS
 `$ARGUMENTS` と会話の文脈からすでに判明している項目はスキップする。
 
 ### ステップ1: キャラクター数
-何人のキャラクターを描くかを確認する（1人 or 2人）。
+何人のキャラクターを描くかを確認する。人数に上限はないが、4人以上は破綻しやすいことを伝える。
 
 ### ステップ2: キャラクター情報
 
-**1人の場合:**
+各キャラクターについて以下を確認する。**2人以上の場合は1人ずつ順に聞き、まとめて聞かない**（属性が混ざるため）。
+
+- 画面上の**位置**（左・中央・右・手前・奥など）※2人以上の場合のみ
 - キャラクター名（作品名）: 例「初音ミク（ボーカロイド）」「オリジナルキャラ」
 - 外見: 髪型・髪色・目の色・体型など（服装は含めない）
 - 服装・小物（省略可）
-
-**2人の場合:** 上記をキャラクター1・キャラクター2それぞれについて確認する。
+- そのキャラの動作・表情
 
 キャラクター名・作品名が不明な場合は外見説明のみでも可。
 
-### ステップ3: シーン・構図・ポーズ
-何をしているシーンか、どんな構図かを確認する。
-例: 「全身立ち絵、カメラ目線、笑顔」「上半身、本を読んでいる」「2人で向き合っている」
+### ステップ3: シーン・構図
+全員が**どこで何をしている**場面かと、どんな構図かを確認する。ここで得た答えが全体シーン文になる。
+例: 「図書館で3人が一緒に勉強している」「全身立ち絵、カメラ目線」「2人で向き合っている」
 
 ### ステップ4: アーティストスタイル
 好みの画師名か画風を確認する（省略可）。**2名以上は画面が不安定になるため1名を推奨**。
@@ -242,11 +267,11 @@ masterpiece, best quality, score_9, score_8, score_7, highres, newest, year 2025
 
 | 人数 | タグ |
 |---|---|
-| 1人（女性） | `1girl` |
-| 1人（男性） | `1boy` |
-| 2人（女性2） | `2girls` |
-| 2人（男性2） | `2boys` |
-| 2人（混合） | `1girl, 1boy` |
+| 1人 | `1girl` / `1boy` |
+| 2人 | `2girls` / `2boys` / `1girl, 1boy` |
+| 3人以上 | `<N>people` に性別内訳を続ける（例: `3people, 2girls, 1boy`） |
+
+性別内訳は同性のみなら1タグ（`3girls`）、混合なら多い方から並べる（`2girls, 1boy`）。
 
 ---
 
@@ -254,37 +279,52 @@ masterpiece, best quality, score_9, score_8, score_7, highres, newest, year 2025
 
 ### 出力1: prompt.yaml
 
-意味単位ごとに改行し、キャラクターブロック内のサブ要素はインデント（2スペース）する。
+人数にかかわらず**このテンプレート1つ**を使う。意味単位ごとに改行し、キャラブロックの中身はインデント（4スペース）する。YAML はリテラルブロック `|` を使い、改行とインデントをそのまま保持する。
 
-**1人の場合:**
 ```yaml
 prompt: |
   masterpiece, best quality, score_9, score_8, score_7, highres, newest, year 2025, <safe_tag>,
   <count>,
-  <character_name> (<series>),
-    <appearance>,
-    <clothing>,
-  <@artist>,
-  <style_tags>,
-  <action, composition, expression, camera>,
+  <全体シーンを述べる1文>
+  <位置語>,
+      <キャラ1を述べる1文>
+      <キャラ1のタグ列（1girl/1boy で始める）>,
+  <位置語>,
+      <キャラ2を述べる1文>
+      <キャラ2のタグ列>,
+  <@artist>, <style_tags>,
+  <camera, composition>,
   <environment, lighting>
 negative_prompt: "<negative>"
 ```
 
-**2人の場合:**
+- キャラクター名がある場合は自然文の中で `hatsune miku (vocaloid)` の形で名指しする
+- 1人の場合は位置語を省き、全体シーン文の直後にキャラブロック（インデント付き）を置く
+- 空行は入れない
+
+**完成例（3人）:**
+
 ```yaml
 prompt: |
-  masterpiece, best quality, score_9, score_8, score_7, highres, newest, year 2025, <safe_tag>,
-  <count>,
-  <character1_name> (<series1>),
-    <appearance1>,
-  <character2_name> (<series2>),
-    <appearance2>,
-  <@artist>,
-  <action, position_tags>,
-  <environment, lighting>
-negative_prompt: "<negative>"
+  masterpiece, best quality, score_9, score_8, score_7, highres, newest, year 2025, safe,
+  3people, 2girls, 1boy,
+  Three characters are studying together at a wooden table inside a quiet library.
+  On the left,
+      a lively girl with short black hair wearing a red bomber jacket looks slightly confused at her notebook.
+      1girl, short hair, black hair, red jacket, bomber jacket, confused, holding notebook,
+  In the center,
+      a gentle woman with long wavy ash blonde hair wearing a white blouse and a cardigan points at the notebook, teaching her kindly.
+      1girl, long hair, wavy hair, blonde hair, white blouse, cardigan, smile, pointing,
+  On the right,
+      an intellectual young man with black-framed glasses wearing a black turtleneck is deeply focused, reading a thick textbook.
+      1boy, black-framed eyewear, black turtleneck, serious, reading, book,
+  @wlop,
+  upper body, from side, layered depth,
+  indoors, library, wooden table, bookshelf, warm indoor lighting, depth of field
+negative_prompt: "worst quality, low quality, early, old, score_1, score_2, score_3, cartoon, graphic, painting, crayon, graphite, abstract, glitch, deformed, mutated, ugly, disfigured, long body, bad anatomy, bad hands, missing fingers, extra fingers, extra digits, fewer digits, cropped, very displeasing, artist name, blurry, jpeg artifacts, lowres, censor, nsfw, explicit, duplicate, twins, clone"
 ```
+
+自然文には `ash blonde` のようにタグに存在しない語も使えるが、タグ列側は実在する Danbooru タグに落とす（この例では `blonde hair`）。確信がないタグは検索して確認する。
 
 ### 出力2: sdctl コマンド
 
