@@ -29,7 +29,7 @@ python skills/anima-prompt/scripts/tag_search.py "青い目" --limit 5
 全体シーンを1文で述べ、そのあと各キャラクターを「位置ブロック」に分けて記述する。**インデントは意味のある構造なので必ず入れる**（キャラブロック内は半角スペース4つ）。
 
 ```
-<quality, meta, year, safe>,
+<quality, meta, year, safety>,
 <count>,
 <全体シーンを述べる1文>
 <位置語>,
@@ -37,38 +37,63 @@ python skills/anima-prompt/scripts/tag_search.py "青い目" --limit 5
     <対応する Danbooru タグ列>,
 <位置語>,
     <...>            ← キャラの数だけ繰り返す
-<@artist>, <style>,
+<@artist>, <style>,        ← 任意。指定がなければ行ごと省く
 <camera, composition>,
 <environment, lighting>
 ```
+
+`<>` は指定があるときだけ埋める。**任意の行に埋めるものが無ければ、その行ごと省く**（空のカンマを残さない）。
 
 キャラクターの人数に上限はない。ただし人数が増えるほど属性の混線が起きやすくなる（後述）。
 
 ### タグ記法
 
 - 全て**小文字・スペース区切り**（アンダースコア不使用）
-- 例外: `score_9`, `score_8` 等のスコアタグのみアンダースコア
+- 例外: `score_7`, `score_1` 等のスコアタグのみアンダースコア
 - アーティストタグは `@` 必須: `@wlop`, `@fkey`（`@` がないと効果が極めて弱い）
 - キャラクター名の作品名は括弧: `hatsune miku (vocaloid)`
 - `BREAK` タグは Anima では効果なし → 使用しない
 - GelbooruとDanbooruでタグが異なる場合はGelbooru優先
+- **代名詞（`he` / `she` / `it`）は自然文で使わない**。Anima は指示対象の解決が苦手で、特に `it` は何を指すか解釈できない。`the girl on the left`, `the plate` のように名詞で書く
+
+### 重み付け
+
+括弧記法は使えるが、**Anima は SDXL より高い重みを必要とする**。SDXL の感覚で `(chibi:1.2)` と書いてもほぼ効かない。
+
+```
+(chibi:2)
+```
+
+効かせたい要素は 1.5〜2.0 を目安にする。
 
 ### 品質タグ
 
+公式推奨の既定はこれ:
+
 ```
-masterpiece, best quality, score_9, score_8, score_7, highres, newest, year 2025
+masterpiece, best quality, score_7, highres, newest, year 2025
 ```
 
-> **注意**: `score_9`, `score_8` は Pony v7 のバイアスを引き継ぎ、NSFW 方向に若干バイアスがかかることがある。スタイル維持を優先する場合は `score_7` のみ使用するか品質タグを省略してアーティストタグで制御する。
+> **重要**: `score_9`, `score_8` を積むのは避ける。Anima の Aesthetic 版は既に高品質側に調整済みで、`score_*` タグを重ねると**逆に品質が劣化する**（公式 README 明記）。また `score_9` / `score_8` は Pony v7 のバイアスを引き継ぎ NSFW 方向に振れることがある。
+>
+> - **Aesthetic 版 / Turbo 版**: `score_*` を全て省略し、`masterpiece, best quality` とアーティストタグで制御する
+> - **Base 版**: `score_7` のみ付ける
 
-### 安全タグ（必須）
+人間評価系の品質タグ（強→弱）: `masterpiece`, `best quality`, `good quality`, `normal quality`, `low quality`, `worst quality`
+
+### 安全タグ
+
+**勝手に決めず、必ずユーザーに確認する**（フェーズ1 ステップ6）。既定値は設けない。
 
 | タグ | 用途 |
 |---|---|
-| `safe` | 全年齢向け（ポジティブ必須。ネガティブに `nsfw, explicit` を追加） |
+| `safe` | 全年齢向け |
 | `sensitive` | 軽い色気・肌見せ |
 | `nsfw` | 成人向け方向 |
 | `explicit` | 強い成人向け方向 |
+| （指定なし） | 安全タグを入れない。モデルの既定挙動に任せる |
+
+安全タグはポジティブ側にのみ置く。**対になるタグをネガティブに入れない**（`safe` を選んだからといって `nsfw, explicit` をネガティブに足したりしない）。
 
 ### キャラクター外見の記述（上から下へ）
 
@@ -101,7 +126,12 @@ white flowy maxi dress with layered chiffon skirt, delicate lace trim
 holding plate, v sign
 
 # 良い例
-left hand holding a plate, right hand making a v sign beside her face, both hands clearly visible
+left hand holding a plate, right hand making a v sign beside the face, both hands clearly visible
+```
+
+手が崩れる場合は**ポジティブ側で指を明示**すると安定する（ネガティブに列挙するだけでは足りない）:
+```
+fingers, fingernails, both hands clearly visible
 ```
 
 4本指・3本指キャラ:
@@ -115,9 +145,10 @@ exactly four fingers on each hand, four digits on each hand, thumb and three fin
 
 - 人数タグを品質タグの直後に必ず明示する
 - キャラクターごとに「**位置語 + 1文の説明 + タグ列**」を一塊にし、他のキャラの記述を挟まない
+- **キャラクター名を出す場合は、名前の直後にそのキャラの外見を続けて書く**。名前だけを並べるとモデルが「誰がどの外見か」を取り違える（公式 README 明記）
 - キャラクターを区別する属性が**対照的**（黒髪×金髪など）な方が安定
 - **3人までは安定**。4人以上は可能だが試行錯誤が必要
-- 複数キャラの場合はネガティブに `duplicate, twins, clone` を追加
+- 特定のキャラだけに小物を付けたい場合は、タグではなく**自然文で所属を書く**（`the girl on the left is wearing glasses`）
 
 **位置語**: 各キャラブロックの見出しになる。人数と構図に応じて選ぶ。
 
@@ -180,13 +211,31 @@ Three characters are studying together at a wooden table inside a quiet library.
 
 ### ネガティブプロンプト
 
-**基本**:
+**基本（公式推奨・既定はこちら）**:
 ```
-worst quality, low quality, early, old, score_1, score_2, score_3, cartoon, graphic, painting, crayon, graphite, abstract, glitch, deformed, mutated, ugly, disfigured, long body, bad anatomy, bad hands, missing fingers, extra fingers, extra digits, fewer digits, cropped, very displeasing, artist name, blurry, jpeg artifacts, lowres, censor
+worst quality, low quality, score_1, score_2, score_3, artist name, blurry, jpeg artifacts, chromatic aberration
 ```
 
-- `safe` の場合は末尾に `, nsfw, explicit` を追加
-- 複数キャラの場合は末尾に `, duplicate, twins, clone` を追加
+Anima は CFG による本物のネガティブプロンプトを持つため、短くても効く。まずはこれで試す。
+
+**拡張（崩れが出たときだけ足す）**:
+```
+early, old, cartoon, graphic, painting, crayon, graphite, abstract, glitch, deformed, mutated, ugly, disfigured, long body, bad anatomy, bad hands, missing fingers, extra fingers, extra digits, fewer digits, cropped, very displeasing, lowres, censor
+```
+
+**状況別の追加**:
+
+| 状況 | 追加するタグ |
+|---|---|
+| 複数キャラ | `duplicate, twins, clone` |
+| 手足が崩れる | 上記「拡張」の指・手系を全部（ポジティブ側の `fingers, fingernails` と併用） |
+| 意図せず獣化する | `anthro, furry, animal ears` ※獣耳キャラを描く場合は除く |
+
+### モデルの限界（プロンプトで解決できないもの）
+
+- **写実は不可**。意図的にイラスト特化で訓練されている。`photorealistic`, `realistic` を積んでも効果は薄い
+- **文字描画は単語〜短いフレーズまで**。長文の看板・本文などは破綻する
+- プロンプトが短い・情報不足だと意図しない内容が出やすい。安全タグと十分な記述で防ぐ
 
 ---
 
@@ -216,13 +265,19 @@ $ARGUMENTS
 例: 「図書館で3人が一緒に勉強している」「全身立ち絵、カメラ目線」「2人で向き合っている」
 
 ### ステップ4: アーティストスタイル
-好みの画師名か画風を確認する（省略可）。**2名以上は画面が不安定になるため1名を推奨**。
+好みの画師名か画風を確認する（省略可）。
+
+- **ユーザーが指定しなかった場合はアーティストタグを入れない**。勝手に画師名を補わない（画風が意図せず固定され、モデル本来の画風が失われる）
+- **2名以上は画面が不安定になるため1名を推奨**
+- ユーザーから「おすすめは？」と聞かれた場合に限り候補を挙げる。`@fkey, @jima` の組み合わせは比較的安定した結果が出る実績がある
+- アーティストタグで画風が決まる場合は `style` 系タグを重ねない（競合して不安定になる）
 
 ### ステップ5: 背景・環境・ライティング
 背景や光源の要望を確認する（省略可）。
 
-### ステップ6: 安全レベル
-`safe` / `sensitive` / `nsfw` / `explicit` のいずれかを確認する。
+### ステップ6: 安全タグ
+`safe` / `sensitive` / `nsfw` / `explicit` / 指定なし のどれにするかを**必ずユーザーに確認する**。
+勝手に `safe` を補わない。「指定なし」を選ばれた場合は安全タグ自体をプロンプトから省く。
 
 ### ステップ7: アスペクト比
 画像の比率を確認する（省略時は `1:1`）:
@@ -236,6 +291,12 @@ $ARGUMENTS
 | 4:3 | 1024 | 768 |
 | 2:3 | 768 | 1152 |
 | 3:2 | 1152 | 768 |
+
+**解像度の制約**:
+- 有効範囲は 512²〜1536² 相当。総画素は**約1MP（1024×1024 相当）を狙う**
+- 幅・高さとも **16の倍数**にする
+- 1MP の中でキャラが十分な面積を占めるように構図を決める（小さすぎると顔・手が崩れる）
+- 21:9 〜 9:21 の極端な比率も一応動くが不安定
 
 ---
 
@@ -258,10 +319,13 @@ python skills/anima-prompt/scripts/tag_search.py "hand on hip" --limit 3
 
 収集した情報とタグ検索結果を組み合わせてプロンプトを組み立てる。
 
-### quality_meta_year_safe の構成
+### quality_meta_year_safety の構成
 ```
-masterpiece, best quality, score_9, score_8, score_7, highres, newest, year 2025, <safe_tag>
+masterpiece, best quality, score_7, highres, newest, year 2025, <safety_tag>
 ```
+
+- Aesthetic 版 / Turbo 版を使う場合は `score_7` を落とす
+- ステップ6 で「指定なし」を選ばれた場合は `<safety_tag>` ごと省き、末尾のカンマも残さない
 
 ### count の決定
 
@@ -283,7 +347,7 @@ masterpiece, best quality, score_9, score_8, score_7, highres, newest, year 2025
 
 ```yaml
 prompt: |
-  masterpiece, best quality, score_9, score_8, score_7, highres, newest, year 2025, <safe_tag>,
+  masterpiece, best quality, score_7, highres, newest, year 2025, <safety_tag>,
   <count>,
   <全体シーンを述べる1文>
   <位置語>,
@@ -300,20 +364,21 @@ negative_prompt: "<negative>"
 
 - キャラクター名がある場合は自然文の中で `hatsune miku (vocaloid)` の形で名指しする
 - 1人の場合は位置語を省き、全体シーン文の直後にキャラブロック（インデント付き）を置く
+- **ユーザーが指定しなかった任意項目は行ごと省く**。特に `<@artist>, <style_tags>` は指定がなければ丸ごと落とす
 - 空行は入れない
 
 **完成例（3人）:**
 
 ```yaml
 prompt: |
-  masterpiece, best quality, score_9, score_8, score_7, highres, newest, year 2025, safe,
+  masterpiece, best quality, score_7, highres, newest, year 2025,
   3people, 2girls, 1boy,
   Three characters are studying together at a wooden table inside a quiet library.
   On the left,
-      a lively girl with short black hair wearing a red bomber jacket looks slightly confused at her notebook.
+      a lively girl with short black hair wearing a red bomber jacket looks slightly confused at the open notebook.
       1girl, short hair, black hair, red jacket, bomber jacket, confused, holding notebook,
   In the center,
-      a gentle woman with long wavy ash blonde hair wearing a white blouse and a cardigan points at the notebook, teaching her kindly.
+      a gentle woman with long wavy ash blonde hair wearing a white blouse and a cardigan points at the notebook, teaching the girl on the left kindly.
       1girl, long hair, wavy hair, blonde hair, white blouse, cardigan, smile, pointing,
   On the right,
       an intellectual young man with black-framed glasses wearing a black turtleneck is deeply focused, reading a thick textbook.
@@ -321,10 +386,24 @@ prompt: |
   @wlop,
   upper body, from side, layered depth,
   indoors, library, wooden table, bookshelf, warm indoor lighting, depth of field
-negative_prompt: "worst quality, low quality, early, old, score_1, score_2, score_3, cartoon, graphic, painting, crayon, graphite, abstract, glitch, deformed, mutated, ugly, disfigured, long body, bad anatomy, bad hands, missing fingers, extra fingers, extra digits, fewer digits, cropped, very displeasing, artist name, blurry, jpeg artifacts, lowres, censor, nsfw, explicit, duplicate, twins, clone"
+negative_prompt: "worst quality, low quality, score_1, score_2, score_3, artist name, blurry, jpeg artifacts, chromatic aberration, duplicate, twins, clone"
 ```
 
 自然文には `ash blonde` のようにタグに存在しない語も使えるが、タグ列側は実在する Danbooru タグに落とす（この例では `blonde hair`）。確信がないタグは検索して確認する。
+
+この例は**ユーザーが `@wlop` を指定した場合**のもの。安全タグと同様、アーティストタグも指定がなければその行ごと省く:
+
+```yaml
+prompt: |
+  masterpiece, best quality, score_7, highres, newest, year 2025,
+  1girl,
+  A girl is standing in a sunlit classroom after school.
+      a calm girl with long black hair in a sailor uniform looks out of the window.
+      1girl, long hair, black hair, serafuku, looking to the side,
+  upper body, from side,
+  indoors, classroom, window, afternoon sunlight, depth of field
+negative_prompt: "worst quality, low quality, score_1, score_2, score_3, artist name, blurry, jpeg artifacts, chromatic aberration"
+```
 
 ### 出力2: sdctl コマンド
 
@@ -338,3 +417,16 @@ sdctl txt2img --prompt prompt.yaml \
 ```
 
 `params.yaml` がある場合は `--params params.yaml` を追加するよう案内する。
+
+**生成パラメータの推奨範囲**: steps 30〜50 / CFG 4〜5。
+
+**サンプラーの選び分け**:
+
+| サンプラー | 特性 |
+|---|---|
+| `er_sde` | 既定。ニュートラルな画風・フラットな塗り・シャープな線 |
+| `euler_a` | 線が柔らかい。CFG を高めにしても破綻しにくい |
+| `dpmpp_2m_sde_gpu` | 変化に富むが不安定。バリエーション探索向け |
+| `euler` | Turbo 版 / Aesthetic 版に向く |
+
+結果が硬い・単調な場合は `euler_a`、構図を振りたい場合は `dpmpp_2m_sde_gpu` を提案する。
