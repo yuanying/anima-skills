@@ -2,7 +2,7 @@
 """prompts/ の全条件を sdctl で生成する。既に存在する画像はスキップする。
 
 使い方: generate.py <出力ディレクトリ> [--scenes s01,s02] [--methods a,b]
-出力:   <出力ディレクトリ>/<scene_id>/<method_id>_<seed>.png
+出力:   <出力ディレクトリ>/<scene_id>/<method_id>_<seed>.png、キャラ参照画像は <出力ディレクトリ>/_ref/<who>.png
 """
 import argparse
 import pathlib
@@ -24,6 +24,12 @@ def main():
     scenes = yaml.safe_load((HERE / "scenes.yaml").read_text())
     want_s = set(args.scenes.split(",")) if args.scenes else None
     want_m = set(args.methods.split(",")) if args.methods else None
+    for pf in sorted((HERE / "prompts" / "_ref").glob("*.yaml")):
+        dst = out / "_ref" / f"{pf.stem}.png"
+        if not dst.exists():
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            subprocess.run(["sdctl", "txt2img", "--params", str(HERE / "params.yaml"), "--prompt", str(pf),
+                            "--width", "1024", "--height", "1024", "--seed", "2", "-o", str(dst)], check=True)
     for s in scenes:
         if want_s and s["id"] not in want_s:
             continue

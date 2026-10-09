@@ -150,6 +150,11 @@ def main():
     chars = yaml.safe_load((HERE / "characters.yaml").read_text())
     scenes = yaml.safe_load((HERE / "scenes.yaml").read_text())
     out = HERE / "prompts"
+    # キャラ紹介・評価者向けの単独参照画像のプロンプト
+    (out / "_ref").mkdir(parents=True, exist_ok=True)
+    for who, c in chars.items():
+        body = f"{LORA}\n{QUALITY}, {c['gender_tag']}, solo, {c['trigger']}, {c['appearance_tags']}, {c['outfit_tags']}, looking at viewer, cowboy shot, simple background, white background"
+        (out / "_ref" / f"{who}.yaml").write_text(yaml.safe_dump({"prompt": body}, allow_unicode=True, sort_keys=False, width=10**6))
     for s in scenes:
         d = out / s["id"]
         d.mkdir(parents=True, exist_ok=True)

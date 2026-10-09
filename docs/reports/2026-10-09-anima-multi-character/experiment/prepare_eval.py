@@ -36,11 +36,14 @@ def main():
         w, h = s["width"], s["height"]
         scale = CELL_LONG / max(w, h)
         cw, chh = int(w * scale), int(h * scale)
+        paths = {m: [src / s["id"] / f"{m}_{seed}.png" for seed in SEEDS] for m in methods}
+        if not all(p.exists() for ps in paths.values() for p in ps):
+            continue  # 生成途中のシーンは飛ばす
         (dst / s["id"]).mkdir(exist_ok=True)
         for code, m in key.items():
             grid = Image.new("RGB", (cw * 2 + 8, chh * 2 + 8), "black")
-            for i, seed in enumerate(SEEDS):
-                im = Image.open(src / s["id"] / f"{m}_{seed}.png").convert("RGB").resize((cw, chh))
+            for i, (seed, path) in enumerate(zip(SEEDS, paths[m])):
+                im = Image.open(path).convert("RGB").resize((cw, chh))
                 d = ImageDraw.Draw(im)
                 d.rectangle([0, 0, 150, 40], fill="black")
                 d.text((8, 4), f"seed {seed}", fill="white", font=font)
