@@ -1,0 +1,323 @@
+# 構図シーン定義。各指示方法（methods）はこの同じ要素からプロンプトを組み立てる。
+#
+# - scene_nl:   全体シーンを述べる 1 文
+# - scene_tags: シーン全体のタグ（行為・関係）
+# - relation_nl: 相互作用・関係を言い直す 1 文（interaction-relations 用）
+# - chars:      キャラごとの位置・ポーズ。pos は位置語ブロックの見出し、label は位置付きの呼び名、
+#               pose_tags / pose_nl はそのキャラ自身の動作
+# - camera_tags / env_tags: カメラ・構図、背景・光
+# - criteria:   評価で確認する「意図」（評価者に渡す）
+#
+# 服装は characters.yaml の固定値を全シーンで使う。
+- id: s01
+  title: 2人並び（基準）
+  difficulty: easy
+  width: 1344
+  height: 768
+  count: 2girls
+  scene_nl: Two girls are standing side by side in a park, facing the viewer.
+  scene_tags: side-by-side, waving
+  relation_nl: The girl on the left waves while the girl on the right keeps her hands on her hips.
+  chars:
+    - who: natsumi
+      label: the girl on the left
+      pos: On the left
+      pose_tags: waving, raised right hand, smile
+      pose_nl: waves at the viewer with her right hand raised and smiles
+    - who: sayaka
+      label: the girl on the right
+      pos: On the right
+      pose_tags: hands on own hips, closed mouth
+      pose_nl: stands with both hands on her hips and a calm expression
+  camera_tags: cowboy shot, straight-on, looking at viewer
+  env_tags: outdoors, park, trees, daytime, sunlight
+  criteria: 2人。左=なつみ（眼鏡・黒髪ポニーテール・緑セーター）が右手を挙げて手を振る。右=さやか（金髪ロング・赤パーカー）が両手を腰に当てる。
+
+- id: s02
+  title: 3人並び・別々のポーズ
+  difficulty: medium
+  width: 1344
+  height: 768
+  count: 3girls
+  scene_nl: Three friends are standing in a row in front of a school building, each striking a different pose.
+  scene_tags: standing in a row
+  relation_nl: The girl on the left makes a peace sign, the girl in the center crosses her arms, and the girl on the right rests a hand on her hip.
+  chars:
+    - who: natsumi
+      label: the girl on the left
+      pos: On the left
+      pose_tags: v, peace sign, smile
+      pose_nl: makes a peace sign with her right hand next to her face
+    - who: sayaka
+      label: the girl in the center
+      pos: In the center
+      pose_tags: crossed arms, frown
+      pose_nl: stands with her arms crossed and frowns
+    - who: aki
+      label: the girl on the right
+      pos: On the right
+      pose_tags: hand on own hip, smile
+      pose_nl: puts one hand on her hip and smiles shyly
+  camera_tags: cowboy shot, straight-on
+  env_tags: outdoors, school building, cherry blossoms, daytime
+  criteria: 3人。左=なつみがピースサイン、中央=さやかが腕組みで不機嫌顔、右=あき（ボブ・そばかす・青Tシャツ）が片手を腰。
+
+- id: s03
+  title: 背中合わせ
+  difficulty: medium
+  width: 1024
+  height: 1024
+  count: 2girls
+  scene_nl: Two characters are standing back to back with their arms crossed on a rooftop.
+  scene_tags: back-to-back, crossed arms
+  relation_nl: The girl on the left and the girl on the right press their backs against each other and face opposite directions.
+  chars:
+    - who: sayaka
+      label: the girl on the left
+      pos: On the left
+      pose_tags: back-to-back, crossed arms, looking to the side, from side
+      pose_nl: stands back to back with the girl on the right, arms crossed, looking away to the left
+    - who: aki
+      label: the girl on the right
+      pos: On the right
+      pose_tags: back-to-back, crossed arms, looking to the side, from side
+      pose_nl: stands back to back with the girl on the left, arms crossed, looking away to the right
+  camera_tags: cowboy shot, from side
+  env_tags: rooftop, fence, blue sky, clouds
+  criteria: 2人が背中を接して立つ（向かい合わせ・並び立ちは失敗）。左=さやか、右=あき。両者腕組み。
+
+- id: s04
+  title: 肩車
+  difficulty: hard
+  width: 768
+  height: 1344
+  count: 2girls
+  scene_nl: One girl is giving another girl a shoulder ride at a summer festival.
+  scene_tags: shoulder carry, carrying person
+  relation_nl: The girl with glasses sits on the shoulders of the blonde girl, and the blonde girl holds her legs.
+  chars:
+    - who: natsumi
+      label: the girl on top
+      pos: On top
+      pose_tags: sitting on shoulders, arms up, open mouth, smile
+      pose_nl: sits on the shoulders of the blonde girl below and raises both arms happily
+    - who: sayaka
+      label: the girl at the bottom
+      pos: At the bottom
+      pose_tags: carrying person, holding legs, standing, looking up
+      pose_nl: stands and carries the girl with glasses on her shoulders, holding her legs
+  camera_tags: full body, straight-on
+  env_tags: outdoors, summer festival, paper lanterns, night, crowd
+  criteria: 肩車。上=なつみ（眼鏡・緑）が下の人物の肩に座り両腕を挙げる。下=さやか（金髪・赤）が立って脚を支える。上下が逆なら失敗。
+
+- id: s05
+  title: お姫様抱っこ
+  difficulty: hard
+  width: 1024
+  height: 1024
+  count: 2girls
+  scene_nl: One character is carrying another character in a princess carry across a garden.
+  scene_tags: princess carry, carrying person
+  relation_nl: The girl with the bob cut carries the blonde girl in both arms, and the blonde girl hangs on to the neck of the girl with the bob cut.
+  chars:
+    - who: aki
+      label: the girl carrying
+      pos: The carrier
+      pose_tags: princess carry, carrying person, standing, blush
+      pose_nl: stands and holds the blonde girl in a princess carry, blushing
+    - who: sayaka
+      label: the girl being carried
+      pos: The one being carried
+      pose_tags: being carried, arms around neck, surprised
+      pose_nl: is lifted in the arms of the girl with the bob cut and puts her arms around the neck of the girl with the bob cut, looking surprised
+  camera_tags: full body, from side
+  env_tags: outdoors, flower garden, roses, afternoon sunlight
+  criteria: お姫様抱っこ。抱える側=あき（ボブ・青Tシャツ）、抱えられる側=さやか（金髪・赤パーカー）。役割が逆なら失敗。
+
+- id: s06
+  title: 逆さまの人物と正立の人物
+  difficulty: very hard
+  width: 1024
+  height: 1024
+  count: 2girls
+  scene_nl: In a playground, a girl with a bob cut is hanging upside down from a horizontal bar while a girl with glasses stands upright facing her.
+  scene_tags: upside-down, face-to-face
+  relation_nl: The girl on the left is upside down while the girl on the right stands upright, and their faces meet at the same height.
+  chars:
+    - who: aki
+      label: the girl on the left
+      pos: On the left
+      pose_tags: upside-down, hanging by legs, horizontal bar, arms down, grin
+      pose_nl: hangs upside down from a horizontal bar by her knees, her arms dangling down, grinning
+    - who: natsumi
+      label: the girl on the right
+      pos: On the right
+      pose_tags: standing, upright, hands on own knees, leaning forward, smile
+      pose_nl: stands upright with her hands on her knees, leaning forward to look at the upside-down girl face to face
+  camera_tags: full body, from side
+  env_tags: outdoors, playground, horizontal bar, sunset, orange sky
+  criteria: あき（左）が鉄棒から逆さまにぶら下がり、なつみ（右）は正立。両方とも逆さま／両方正立なら失敗。顔が向き合っていれば加点。
+
+- id: s07
+  title: 3人の縦積み（肩車タワー）
+  difficulty: very hard
+  width: 768
+  height: 1344
+  count: 3girls
+  scene_nl: Three characters form a human tower, stacked vertically on each other's shoulders at a sports festival.
+  scene_tags: human tower, shoulder carry, stacked
+  relation_nl: The blonde girl is on the shoulders of the girl with glasses, who is on the shoulders of the girl with the bob cut at the bottom.
+  chars:
+    - who: sayaka
+      label: the girl at the top
+      pos: At the top
+      pose_tags: sitting on shoulders, arms up, open mouth
+      pose_nl: sits at the very top on the shoulders of the girl with glasses and raises both arms
+    - who: natsumi
+      label: the girl in the middle
+      pos: In the middle
+      pose_tags: sitting on shoulders, holding legs, nervous
+      pose_nl: sits in the middle on the shoulders of the girl with the bob cut below, holding the legs of the blonde girl above
+    - who: aki
+      label: the girl at the bottom
+      pos: At the bottom
+      pose_tags: standing, carrying person, struggling, sweat
+      pose_nl: stands at the bottom and supports both girls on her shoulders, struggling and sweating
+  camera_tags: full body, straight-on, vertical composition
+  env_tags: outdoors, schoolyard, sports festival, flags, blue sky
+  criteria: 3人が縦一列に積み重なる。上=さやか、中=なつみ、下=あき。人数3・順序一致で成功。
+
+- id: s08
+  title: 前景と遠景の極端なサイズ差
+  difficulty: hard
+  width: 1344
+  height: 768
+  count: 3girls
+  scene_nl: A girl's face fills the foreground while two tiny figures stand far away in the background on a grassy hill.
+  scene_tags: depth, size difference
+  relation_nl: The blonde girl in the foreground is huge, while the girl with glasses and the girl with the bob cut far behind are tiny.
+  chars:
+    - who: sayaka
+      label: the girl in the foreground
+      pos: In the foreground
+      pose_tags: close-up, face, looking at viewer, smile
+      pose_nl: is extremely close to the camera on the left side, her face very large in the frame, smiling at the viewer
+    - who: natsumi
+      label: the girl in the background
+      pos: In the background, left
+      pose_tags: tiny, full body, waving
+      pose_nl: stands far away on the hill as a tiny figure, waving
+    - who: aki
+      label: the girl in the background
+      pos: In the background, right
+      pose_tags: tiny, full body, standing
+      pose_nl: stands far away on the hill as a tiny figure next to the girl with glasses
+  camera_tags: extreme depth of field, foreground focus, wide shot
+  env_tags: outdoors, grassy hill, blue sky, clouds, wind
+  criteria: 前景=さやかの顔が大きく、遠景=なつみとあきが小さく全身で立つ。3人・サイズ差・遠景2人の識別で成功。
+
+- id: s09
+  title: 真上からの俯瞰（寝転ぶ3人）
+  difficulty: hard
+  width: 1024
+  height: 1024
+  count: 3girls
+  scene_nl: Seen from directly above, three friends are lying on their backs on the grass with their heads touching in the center, forming a circle.
+  scene_tags: lying, on back, heads together
+  relation_nl: All three heads touch at the center of the frame and their bodies point outward.
+  chars:
+    - who: natsumi
+      label: the girl at the top
+      pos: At the top of the frame
+      pose_tags: lying, on back, smile, looking up
+      pose_nl: lies on her back at the top of the frame, smiling up at the camera
+    - who: sayaka
+      label: the girl at the bottom left
+      pos: At the bottom left of the frame
+      pose_tags: lying, on back, closed eyes
+      pose_nl: lies on her back at the bottom left with her eyes closed
+    - who: aki
+      label: the girl at the bottom right
+      pos: At the bottom right of the frame
+      pose_tags: lying, on back, laughing
+      pose_nl: lies on her back at the bottom right, laughing
+  camera_tags: from above, overhead shot, full body
+  env_tags: outdoors, grass, flowers, sunlight
+  criteria: 真上からの視点で3人が仰向けに寝て頭を中央に寄せる。3人・俯瞰・頭が中央で成功（位置の厳密一致は加点）。
+
+- id: s10
+  title: 極端な煽り（見下ろす2人）
+  difficulty: hard
+  width: 1024
+  height: 1024
+  count: 2girls
+  scene_nl: Seen from the ground looking straight up, two characters lean over the viewer and look down.
+  scene_tags: looking down, leaning over
+  relation_nl: The girl on the left points down at the viewer while the girl on the right looks down worriedly.
+  chars:
+    - who: natsumi
+      label: the girl on the left
+      pos: On the left
+      pose_tags: looking down, pointing at viewer, leaning forward, smile
+      pose_nl: leans over and points down at the viewer with her right index finger, smiling
+    - who: aki
+      label: the girl on the right
+      pos: On the right
+      pose_tags: looking down, hands on own knees, worried
+      pose_nl: leans over with her hands on her knees, looking down at the viewer with a worried face
+  camera_tags: from below, worm's-eye view, strong foreshortening, upper body
+  env_tags: blue sky, clouds, sun, outdoors
+  criteria: 真下からの煽り。2人が見下ろす。左=なつみが指差し、右=あきが心配顔。煽りになっていなければ失敗。
+
+- id: s11
+  title: 左右非対称の手（ハイタッチ）
+  difficulty: hard
+  width: 1344
+  height: 768
+  count: 2girls
+  scene_nl: Two girls are facing each other in a gym and giving each other a high five.
+  scene_tags: high five, facing another
+  relation_nl: The right hand of the girl on the left meets the left hand of the girl on the right in a high five.
+  chars:
+    - who: sayaka
+      label: the girl on the left
+      pos: On the left
+      pose_tags: high five, raised right hand, left hand holding basketball, from side
+      pose_nl: raises her right hand for a high five and holds a basketball under her left arm
+    - who: natsumi
+      label: the girl on the right
+      pos: On the right
+      pose_tags: high five, raised left hand, right hand holding water bottle, from side
+      pose_nl: raises her left hand to meet the high five and holds a water bottle in her right hand
+  camera_tags: full body, from side
+  env_tags: indoors, gym, basketball court, wooden floor
+  criteria: 向き合ってハイタッチ。左=さやか（バスケットボール所持）、右=なつみ（水筒所持）。持ち物の持ち主・手の左右が一致するか。
+
+- id: s12
+  title: 持ち物の所属（色の入れ替わり誘発）
+  difficulty: medium
+  width: 1344
+  height: 768
+  count: 3girls
+  scene_nl: Three friends are sitting on a bench at a train station, each holding a different item.
+  scene_tags: sitting, bench, holding
+  relation_nl: The yellow umbrella belongs to the girl on the left, the blue balloon to the girl in the center, and the red book to the girl on the right.
+  chars:
+    - who: natsumi
+      label: the girl on the left
+      pos: On the left
+      pose_tags: sitting, holding umbrella, yellow umbrella, closed umbrella
+      pose_nl: sits and holds a closed yellow umbrella
+    - who: sayaka
+      label: the girl in the center
+      pos: In the center
+      pose_tags: sitting, holding balloon, blue balloon
+      pose_nl: sits and holds a blue balloon on a string
+    - who: aki
+      label: the girl on the right
+      pos: On the right
+      pose_tags: sitting, holding book, red book, reading
+      pose_nl: sits and reads a red book
+  camera_tags: full body, straight-on
+  env_tags: train station, platform, bench, evening
+  criteria: 3人がベンチに座る。左=なつみ（黄色い傘）、中央=さやか（青い風船）、右=あき（赤い本）。持ち物・服の色が他キャラに移っていないか。
