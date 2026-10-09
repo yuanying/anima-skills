@@ -13,6 +13,7 @@
 - 上位 4 方式どうしの差は、今回の枚数（各 48 枚）では統計的に有意とまでは言えない。はっきり差が出たのは「自然文あり」と「タグのみ」の間である。
 - `BREAK` は効かなかった。`tags-break` の成功率は `tags-only` と同じ 1/48 である。
 - 3 人の縦積み（s07）と、前景・遠景の極端なサイズ差（s08）は、どの方式でもほぼ成功しなかった。プロンプトの書き方だけでは届かない構図である。
+- この結果に沿ってスキルを書き直し、同じ条件で再検証した（[修正版スキルでの再検証](#修正版スキルでの再検証)）。修正版の成功は 35/48 で、同じ評価者が判定し直した旧スキルの 31/48 を上回った。2 人並びの分割コマはなくなった。3 人以上でキャラごとのタグ列を足しても差は出なかったため、タグ列はやめた。
 
 ## 背景と目的
 
@@ -385,6 +386,150 @@ cowboy shot, straight-on, outdoors, school building, cherry blossoms, daytime
 6. **カメラ・構図の節に、プロンプトでは届きにくい構図を書き添える。** 3 人の縦積みと、前景・遠景の極端なサイズ差である。
 7. **差が出なかった点は変えない。** 上位 4 方式（`hybrid-tags-nl`、`interaction-relations`、`nl-sentences`、`skill-position-blocks`）の間の差は統計的に有意ではない。自然文の書き方の細部（主語をくり返すか、`To be clear` で再掲するか）を厳密に規定する根拠はない。
 
+## 修正版スキルでの再検証
+
+「スキルへの反映案」に沿って `anima-prompt` スキルを書き直し、同じ条件で生成し直して確かめた。
+
+### 比べた書き方
+
+| 方式 | 書き方 |
+|---|---|
+| `skill-v2` | 修正版スキルの書き方。`hybrid-tags-nl` と同じ 2 行構成で、段落の最後に相互作用・持ち物を言い直す 1 文（シーン定義の `relation_nl`）を足した |
+| `skill-v2-tags` | `skill-v2` の各キャラの文の直後に、そのキャラのタグ列（`1girl` から始まる）を同じ段落のまま続けた変種。3 人以上でタグ列を残すべきかを確かめるために作った |
+| `skill-position-blocks` | 旧スキルの書き方（比較の基準） |
+| `hybrid-tags-nl` | 前回 1 位の書き方（言い直し文の効果を見るための基準） |
+
+s02 の `skill-v2` は次のとおりである（LoRA タグと品質タグは省略）。
+
+```text
+<品質タグ>, 3girls, kutara natsumi, kutara sayaka, kutara aki, standing in a row, cowboy shot, straight-on, outdoors, school building, cherry blossoms, daytime.
+Three friends are standing in a row in front of a school building, each striking a different pose. On the left, kutara natsumi, a girl with black hair tied in a low ponytail, blunt bangs and round glasses, wearing a green turtleneck sweater and a brown long skirt, makes a peace sign with her right hand next to her face. In the center, kutara sayaka, ..., stands with her arms crossed and frowns. On the right, kutara aki, ..., puts one hand on her hip and smiles shyly. The girl on the left makes a peace sign, the girl in the center crosses her arms, and the girl on the right rests a hand on her hip.
+```
+
+`skill-v2-tags` では、各キャラの文の後ろに `1girl, kutara natsumi, black hair, low ponytail, ..., v, peace sign, smile.` のようなタグ列が入る。
+
+### 条件
+
+- モデル・LoRA・サンプラー・ステップ・CFG・解像度・ネガティブ・seed（101、202、303、404）は前回と同じにした。
+- 対象は全 12 シーンとし、新しい 2 方式で計 96 枚を生成した。
+- 旧スキルと `hybrid-tags-nl` は前回の画像をそのまま使った。同じ条件で生成し直すと、前回の画像とピクセル単位で一致することを確かめている（s01、`skill-position-blocks`、seed 202）。
+- 判定基準は前回と同じ [`eval_rubric.md`](experiment/eval_rubric.md) である。4 方式 × 12 シーン × 4 seed の計 192 枚を、方式名を伏せたコード（R1〜R4）で、新しい評価者 6 人（Claude のサブエージェント、1 人 2 シーン）が判定した。旧 2 方式も判定し直し、全方式を同じ評価者の目で比べている。
+
+### 結果
+
+| 方式 | 成功 | 成功率（95% 信頼区間） | 2 人の構図 | 3 人の構図 | 平均スコア | 人数 | 属性 | 位置・役割 | ポーズ | 構図 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| `skill-v2` | 35/48 | 73%（59〜83%） | 23/28 | 12/20 | 4.40 | 92% | 88% | 92% | 77% | 92% |
+| `skill-v2-tags` | 35/48 | 73%（59〜83%） | 24/28 | 11/20 | 4.52 | 94% | 92% | 94% | 81% | 92% |
+| `hybrid-tags-nl` | 36/48 | 75%（61〜85%） | 26/28 | 10/20 | 4.62 | 98% | 90% | 98% | 85% | 92% |
+| `skill-position-blocks`（旧） | 31/48 | 65%（50〜77%） | 19/28 | 12/20 | 4.46 | 98% | 92% | 96% | 77% | 83% |
+
+シーン別の成功数（4 枚中）:
+
+| 方式 | s01 | s02 | s03 | s04 | s05 | s06 | s07 | s08 | s09 | s10 | s11 | s12 | 計 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| `skill-v2` | 4 | 4 | 4 | 4 | 1 | 3 | 0 | 0 | 4 | 3 | 4 | 4 | 35 |
+| `skill-v2-tags` | 4 | 4 | 4 | 4 | 3 | 2 | 1 | 0 | 4 | 3 | 4 | 2 | 35 |
+| `hybrid-tags-nl` | 4 | 4 | 4 | 4 | 3 | 4 | 0 | 0 | 4 | 3 | 4 | 2 | 36 |
+| `skill-position-blocks`（旧） | 0 | 4 | 4 | 4 | 4 | 1 | 1 | 0 | 4 | 2 | 4 | 3 | 31 |
+
+同じシーン・同じ seed の組で、片方だけが成功した数:
+
+| A | B | A だけ成功 | B だけ成功 |
+|---|---|---|---|
+| `skill-v2` | `skill-position-blocks`（旧） | 8 | 4 |
+| `skill-v2` | `hybrid-tags-nl` | 2 | 3 |
+| `skill-v2-tags` | `skill-v2` | 3 | 3 |
+
+今回の評価者は、表情や手の位置といった細部を前回より厳しく見た。旧 2 方式の成功は前回より 3 枚ずつ減っている（`skill-position-blocks` は 34→31、`hybrid-tags-nl` は 39→36）。成功・失敗の判定が前回と一致したのは、どちらも 48 枚中 45 枚である。方式間の比較には、同じ評価者が付けた今回の値を使う。全判定は [`experiment/results_v2.csv`](experiment/results_v2.csv) にある。
+
+### わかったこと
+
+**1. 修正版は旧スキルより成功が多く、分割コマが消えた。** `skill-v2` の成功は 35/48 で、旧スキルの 31/48 を上回った。片方だけ成功した組も 8 対 4 である。最も大きな差は s01（2 人並び）に出た。旧スキルは前回と同じく 4 枚とも分割コマになり、`skill-v2` は 4 枚とも 1 枚の場面になった。ただし全体の差は信頼区間が重なる程度で、統計的に有意とまでは言えない。
+
+| 旧スキル（s01, seed 202）: 分割コマ | `skill-v2`（s01, seed 202）: 1 つの場面 |
+|---|---|
+| ![](images/pick_s01_skill-position-blocks_202.webp) | ![](images/v2_pick_s01_skill-v2_202.webp) |
+
+**2. 3 人以上でも、キャラごとのタグ列は要らない。** `skill-v2-tags` と `skill-v2` は成功数が同じ 35/48 で、片方だけ成功した組も 3 対 3 だった。3 人の構図に限っても 11/20 と 12/20、人数の正答率は 17/20 と 16/20 で、差はない。前回は旧スキルの人数の正答率が全方式で最も高かった（全シーンで 98%）。今回の再判定では、3 人の構図の人数の正答率は旧スキルと `hybrid-tags-nl` がどちらも 19/20 で、タグ列の有無による差は見られなかった。そこでスキルは人数によらず、タグ列なしの 1 つの書き方に統一した。
+
+**3. 言い直し文は、持ち物には効き、人物には逆効果のことがある。** 言い直し文だけが違う `skill-v2` と `hybrid-tags-nl` の差は、全体では 35 対 36 で、ほぼ同じだった。シーン別に見ると、効果は向きが分かれた。
+
+- **s12（持ち物の所属）**: `skill-v2` は 4/4、`hybrid-tags-nl` は 2/4 だった。前回の `interaction-relations`（4/4）と同じ傾向である。`hybrid-tags-nl` の失敗の 1 枚は、なつみが傘を持たずにベンチへ立て掛けたものだった。
+
+| `hybrid-tags-nl`（s12, seed 404）: 傘を持っていない | `skill-v2`（s12, seed 404）: 傘を手に持つ |
+|---|---|
+| ![](images/v2_pick_s12_hybrid-tags-nl_404.webp) | ![](images/v2_pick_s12_skill-v2_404.webp) |
+
+- **s08（前景と遠景のサイズ差）**: `skill-v2` は 4 枚中 3 枚で 4 人目が現れた。`hybrid-tags-nl` では 0 枚である。s08 の言い直し文は `the girl with glasses and the girl with the bob cut far behind are tiny` と、人物を外見の呼び名で言い直している。モデルがこれを別の人物と解釈した可能性がある。s12 の言い直し文は、キャラの文と同じ `the girl on the left` で人物を指していた。
+
+| `hybrid-tags-nl`（s08, seed 202）: 3 人 | `skill-v2`（s08, seed 202）: 4 人目が現れる |
+|---|---|
+| ![](images/v2_pick_s08_hybrid-tags-nl_202.webp) | ![](images/v2_pick_s08_skill-v2_202.webp) |
+
+- **s05（お姫様抱っこ）**: `skill-v2` は 1/4 で、`hybrid-tags-nl` の 3/4 を下回った。失敗はどれも「抱えられる側が驚いた顔をしていない」で、構図と役割は全枚で合っていた。言い直し文が表情の指示を薄めた可能性はあるが、この枚数では判断できない。
+
+この結果から、スキルでは言い直し文を「キャラごとの持ち物があるときに、持ち主を位置語の呼び名で言い直す」用途に限った。人物どうしの関係は、全体シーン文と各キャラの動作の文で書く。
+
+**4. プロンプトだけでは届かない構図は、修正版でも変わらない。** s07（3 人の縦積み）は 4 方式あわせて 16 枚中 2 枚、s08（サイズ差）は 0 枚の成功だった。s08 では遠景の 2 人が大きく描かれ、どの方式でも「小さな全身像」にならなかった。スキルには、この 2 つを書き方だけでは届きにくい構図として明記した。
+
+### コンタクトシート（再検証）
+
+各シーンの 16 枚。行が方式、列が seed で、緑枠が成功、赤枠が失敗である。
+
+<details>
+<summary>再検証の s01〜s12 のコンタクトシートを開く</summary>
+
+#### s01 2人並び（基準）
+![s01](images/v2_sheet_s01.webp)
+
+#### s02 3人並び・別々のポーズ
+![s02](images/v2_sheet_s02.webp)
+
+#### s03 背中合わせ
+![s03](images/v2_sheet_s03.webp)
+
+#### s04 肩車
+![s04](images/v2_sheet_s04.webp)
+
+#### s05 お姫様抱っこ
+![s05](images/v2_sheet_s05.webp)
+
+#### s06 逆さまの人物と正立の人物
+![s06](images/v2_sheet_s06.webp)
+
+#### s07 3人の縦積み（肩車タワー）
+![s07](images/v2_sheet_s07.webp)
+
+#### s08 前景と遠景の極端なサイズ差
+![s08](images/v2_sheet_s08.webp)
+
+#### s09 真上からの俯瞰（寝転ぶ3人）
+![s09](images/v2_sheet_s09.webp)
+
+#### s10 極端な煽り（見下ろす2人）
+![s10](images/v2_sheet_s10.webp)
+
+#### s11 左右非対称の手（ハイタッチ）
+![s11](images/v2_sheet_s11.webp)
+
+#### s12 持ち物の所属（色の入れ替わり誘発）
+![s12](images/v2_sheet_s12.webp)
+
+</details>
+
+### スキルに反映した内容
+
+| 反映案 | 反映 | 根拠 |
+|---|---|---|
+| 1. テンプレートを `hybrid-tags-nl` 型の 2 行構成にする | した | 前回 81%（1 位）、再検証で旧スキル 65% に対し 73%、s01 の分割コマが 4/4 から 0/4 に |
+| 2. キャラごとのタグ列をやめる | した（3 人以上も） | 再検証で `skill-v2-tags` と `skill-v2` に差なし（35/48 同士、3 人の構図 11/20 と 12/20） |
+| 3. 相互作用・持ち物の言い直し文を任意で置く | 持ち物だけにした | s12 で 4/4 対 2/4。人物を外見の呼び名で言い直した s08 では 4 人目が 3/4 で現れた |
+| 4. 「キャラクターの描き分け」の記述を改める | した | 自然文で名前と外見を隣接させる。`with` を使ったタグ列内の書き方は 4%。「2 人は安定、3 人は失敗が増える」に弱めた |
+| 5. `BREAK` を使わない | 根拠を添えて残した | `tags-break` 2%、`tags-only` 2% |
+| 6. プロンプトでは届きにくい構図を明記する | した | s07・s08 は前回・今回とも、ほぼ全方式で失敗 |
+| 7. 差が出なかった点は変えない | 守った | 自然文の細部（主語のくり返し、`To be clear` の再掲）は規定していない。1 人の絵の書き方は検証していないため従来のままにした |
+
 ## 再現方法
 
 [`experiment/`](experiment/) に、条件の定義と生成・評価の手順をすべて置いた。
@@ -402,5 +547,10 @@ cowboy shot, straight-on, outdoors, school building, cherry blossoms, daytime
 | `aggregate.py` | 判定 CSV を集計して `results.csv` と `summary.md` を作る |
 | `make_figures.py` | コンタクトシートと代表例の画像を作る |
 | `results.csv` | 全 432 枚の判定結果 |
+| `build_prompts_v2.py` | 再検証用に、修正版スキルの書き方（`skill-v2`、`skill-v2-tags`）のプロンプトを `prompts/` に書き出す |
+| `recheck_v2.py` | 再検証の評価用グリッドの作成（`prepare`）、集計（`aggregate`）、図の作成（`figures`） |
+| `results_v2.csv` / `summary_v2.md` | 再検証の全 192 枚の判定結果と集計 |
 
 キャラ紹介の画像は `prompts/_ref/` のプロンプトを 1024×1024、seed 2 で生成したものである。
+
+再検証の画像は `generate.py <出力先> --methods skill-v2,skill-v2-tags` で生成した。
