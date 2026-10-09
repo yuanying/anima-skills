@@ -1,0 +1,27 @@
+# 3 人のキャラクター定義（全シーン共通）。
+# LoRA kutara_anima.v12 のトリガーワード + 外見 + 固定の服装。
+# 服装の色をキャラごとに分け（緑 / 赤 / 青）、属性の混線を判定しやすくしている。
+natsumi:
+  trigger: kutara natsumi
+  gender_tag: 1girl
+  noun: the girl with glasses
+  appearance_tags: black hair, low ponytail, blunt bangs, grey eyes, round eyewear
+  outfit_tags: green turtleneck sweater, brown long skirt
+  appearance_nl: a girl with black hair tied in a low ponytail, blunt bangs and round glasses
+  outfit_nl: wearing a green turtleneck sweater and a brown long skirt
+sayaka:
+  trigger: kutara sayaka
+  gender_tag: 1girl
+  noun: the blonde girl
+  appearance_tags: blonde hair, long hair, straight hair, forehead, thick eyebrows
+  outfit_tags: red hoodie, black pleated skirt
+  appearance_nl: a girl with long straight blonde hair, a bare forehead and thick eyebrows
+  outfit_nl: wearing a red hoodie and a black pleated skirt
+aki:
+  trigger: kutara aki
+  gender_tag: 1boy
+  noun: the boy with the bob cut
+  appearance_tags: femboy, black hair, bob cut, blunt bangs, freckles
+  outfit_tags: blue t-shirt, khaki cargo pants
+  appearance_nl: a slender femboy with a short black bob cut, blunt bangs and freckles
+  outfit_nl: wearing a blue t-shirt and khaki cargo pants
