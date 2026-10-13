@@ -2,7 +2,7 @@
 """prompts/ の全条件を sdctl で生成する。既に存在する画像はスキップする。
 
 使い方: generate.py <出力ディレクトリ> [--scenes a01,p01] [--methods pos-words,no-pos]
-                    [--prompts <prompts ディレクトリ>] [--scenes-file <シーン定義 YAML>] [--seeds 101,202]
+                    [--prompts <prompts ディレクトリ>] [--scenes-file <シーン定義 YAML,...>] [--seeds 101,202]
 出力:   <出力ディレクトリ>/<scene_id>/<method_id>_<seed>.png
 """
 import argparse
@@ -26,7 +26,7 @@ def main():
     args = ap.parse_args()
     out = pathlib.Path(args.outdir)
     prompts = pathlib.Path(args.prompts)
-    scenes = yaml.safe_load(pathlib.Path(args.scenes_file).read_text())
+    scenes = [s for f in args.scenes_file.split(",") for s in yaml.safe_load(pathlib.Path(f).read_text())]
     seeds = [int(x) for x in args.seeds.split(",")] if args.seeds else SEEDS
     want_s = set(args.scenes.split(",")) if args.scenes else None
     want_m = set(args.methods.split(",")) if args.methods else None
