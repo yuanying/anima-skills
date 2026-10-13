@@ -44,6 +44,8 @@ python skills/anima-prompt/scripts/tag_search.py "青い目" --limit 5
 
 この構造は 2〜3 人で 9 通りの書き方を比べた検証（`docs/reports/2026-10-09-anima-multi-character/`）で決めた。この形（`hybrid-tags-nl`）は成功率 81% で 1 位、旧来の「位置語の見出し + インデントしたブロック」は 71% だった。修正後の再検証でも、この構造は旧来の形より多く成功した（同じ評価者による再判定で 73% と 65%）。相互作用のない 2 人並びでは、旧来の形が 4 枚とも左右 2 枚の分割コマになった。この構造では 1 枚もならなかった。
 
+位置語の有無は別の検証（`docs/reports/2026-10-13-anima-position-words/`）で比べた。位置語は動作やカメラワークの妨げにならず、3 人や持ち物のある構図では外すと混線が増えたため、既定では残す。この構造でも分割コマになる構図があり、そのときは位置語を外す（後述「位置語」）。
+
 3 人以上でも、キャラごとの Danbooru タグ列は足さない。各キャラの文の直後にタグ列を足した形も試したが、3 人の構図の成功数・人数の正答率とも差が出なかった（成功は 20 枚中 11 枚と 12 枚）。
 
 ### タグ記法
@@ -162,6 +164,14 @@ exactly four fingers on each hand, four digits on each hand, thumb and three fin
 | 奥行き | `In the foreground,` / `In the background,` |
 | 1人 | 位置語は使わない |
 
+位置語を付けるかどうかの判断（検証 `docs/reports/2026-10-13-anima-position-words/` に基づく）:
+
+- **動作やカメラワークを優先したい構図でも、位置語は外さなくてよい**。手渡し・髪を結う・追いかける・長縄跳びの 4 シーンと、後ろ姿・俯瞰・オーバーショルダー・ダッチアングル・顔の接写の 5 シーンで、位置語あり・なし・人物どうしの相対表現（`kutara sayaka stands behind kutara natsumi`）を比べた。動作の正確さにも、カメラ指定への従い方にも差は出なかった。同じ seed なら、書き方が違ってもほぼ同じ構図の絵になる
+- **3 人の構図と、持ち物を言い直す構図では位置語を残す**。位置語を外すと、3 人が絡む構図（長縄跳び・俯瞰のトランプ）で服の色の混線が増えた（属性の正解は位置語ありで 8/8、なしで 3/8）。3 人がそれぞれ違う物を持つ構図では、持ち物の持ち主が入れ替わった（成功は位置語ありで 4/4、なしで 1/4）
+- **位置語は画面上の左右を決める**。外すと左右はモデル任せになる。相互作用のない並びでは、文に書いた順に左から並んだ（左右・中央の正解は 48 枚中 47 枚。外れた 1 枚は 4 人出現）。相互作用のある構図では、位置語ありと逆の左右になることがある（髪を結う構図で 8 枚中 8 枚）
+- **分割コマが出たら位置語を外す**。相互作用のない 2 人が並んで別々のことをする構図で、この 1 段落の形でも左右 2 コマに分かれることがある（机に並んで勉強と居眠りの構図で、位置語ありが 20 枚中 13 枚。全体シーン文にだけ位置を書いた形も 4 枚中 3 枚）。位置語を外し、左に置きたいキャラから順に文を書くと、分割は 20 枚中 0 枚になった（左右の入れ替わりは 20 枚中 1 枚）。同じ型の別の 3 構図（ソファ、キッチン、3 人のバス停）では位置語ありでも分割は出なかったので、最初から外す必要はない
+- 位置語を外したときは、相互作用の相手を名前で指す（`stands behind kutara sayaka`）。位置語があるときは位置付きの呼び名（`the girl on the right`）で指す。どちらで指しても、動作の正確さに差は出なかった
+
 **キャラの文の中身**:
 
 ```
@@ -170,7 +180,7 @@ On the left, kutara natsumi, a girl with black hair tied in a low ponytail, blun
 
 - 「位置語 → 名前 → 外見（髪・目など） → 服装 → 動作」の順。名前がないオリジナルキャラは `a girl with ...` から始める
 - タグにない語彙（`ash blonde`、素材や質感の説明など）も自由に書いてよい
-- 文と文の間は改行しない。**位置語を見出しにして改行・インデントでキャラごとに区切ると、相互作用のない並びで「キャラごとに別のコマ」の分割画像になることがある**（検証の 2 人並びで 4/4）
+- 文と文の間は改行しない。**位置語を見出しにして改行・インデントでキャラごとに区切ると、相互作用のない並びで「キャラごとに別のコマ」の分割画像になることがある**（検証の 2 人並びで 4/4）。1 段落で書いても分割コマになる構図はある。そのときの対処は上の「位置語を付けるかどうかの判断」を参照
 
 **持ち物の言い直し（任意）**: キャラごとに違う持ち物があるときは、段落の最後に持ち主を 1 文で言い直す。人物はキャラの文と同じ位置語の呼び名（`the girl on the left`）で指す。
 
@@ -179,6 +189,7 @@ The yellow umbrella belongs to the girl on the left, the blue balloon to the gir
 ```
 
 - 検証では、3 人がそれぞれ違う物を持つ構図で、言い直しありが 4/4、なしが 2/4 だった
+- 言い直しの呼び名は位置語の呼び名にする。キャラの文から位置語を外し、言い直しも名前（`belongs to kutara natsumi`）で書いた形では、同じ構図の成功が 1/4 に下がった
 - 人物どうしの関係を言い直す文は、全体では効果が出なかった（言い直しありとなしで成功 35/48 と 36/48）。特に、`the girl with glasses` のような外見の呼び名で人物を言い直すと、別の人物と解釈されて人数が増えることがある（前景・遠景の構図で 4 人出現が 3/4。言い直しなしでは 0/4）。関係は全体シーン文と各キャラの動作で書けば足りる
 
 ### カメラ・構図
@@ -371,6 +382,7 @@ negative_prompt: "<negative>"
 - キャラクター名がある場合は 1 行目に名前だけを並べ、2 行目の各キャラの文で `hatsune miku (vocaloid), a girl with ...` のように名前の直後に外見を書く
 - 2 行目は 1 段落。キャラの文の間で改行しない、インデントしない
 - 持ち物の言い直しは、キャラごとの持ち物がなければ省く
+- 位置語は既定で付ける。外すのは、相互作用のない並びで分割コマが出たときだけ（「位置語を付けるかどうかの判断」）。外すときは左に置くキャラから順に文を書き、相互作用の相手は名前で指す
 - **ユーザーが指定しなかった任意項目は省く**。特に `<@artist>, <style_tags>` は指定がなければ丸ごと落とす
 - 空行は入れない
 
@@ -384,6 +396,15 @@ negative_prompt: "worst quality, low quality, score_1, score_2, score_3, artist 
 ```
 
 この例は**ユーザーが `@wlop` を指定した場合**のもの。安全タグと同様、アーティストタグも指定がなければ省く。
+
+**分割コマが出たときの書き直し例（2人、位置語なし）:** 相互作用のない並びで左右 2 コマに分かれたら、位置語を外し、左に置くキャラから順に書く。
+
+```yaml
+prompt: |
+  masterpiece, best quality, score_7, highres, newest, year 2025, safe, 2girls, kutara aki, kutara sayaka, sitting, desk, side-by-side, upper body, straight-on, indoors, library, bookshelves, desk lamp, evening.
+  Two girls are sitting next to each other at a long desk in a library, each doing something different. kutara aki, a slender flat-chested futanari girl with a short black bob cut, blunt bangs and freckles, wearing a blue t-shirt and khaki cargo pants, writes in a notebook with a pencil, looking down seriously. kutara sayaka, a girl with long straight blonde hair and a bare forehead, wearing a red hoodie and a black pleated skirt, has fallen asleep with her head resting on her folded arms on the desk.
+negative_prompt: "worst quality, low quality, score_1, score_2, score_3, artist name, blurry, jpeg artifacts, chromatic aberration, duplicate, twins, clone"
+```
 
 **1人の場合:** 複数人の検証の対象外なので、従来の形のまま使う。全体シーン文の直後に、そのキャラの自然文 1 文と Danbooru タグ列をインデントして置く。
 
