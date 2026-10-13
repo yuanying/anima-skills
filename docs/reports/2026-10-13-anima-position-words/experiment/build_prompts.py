@@ -29,7 +29,7 @@ def char_sentence(c, ch, ref):
     return f"{c['trigger']}, {c['appearance_nl']}, {c['outfit_nl']}, {ch['pose_nl'].format(**ref)}."
 
 
-def body(s, chars, scene, by_label, pos_prefix, extra=None):
+def body(s, chars, scene, by_label, pos_prefix, extra=None, sep=" "):
     ref = refs(s, chars, by_label)
     sents = [scene]
     for ch in s["chars"]:
@@ -39,7 +39,7 @@ def body(s, chars, scene, by_label, pos_prefix, extra=None):
         sents.append(extra)
     if s.get("belongings_nl"):
         sents.append(s["belongings_nl"].format(**ref))
-    return head_tags(s, chars) + "\n" + " ".join(sents)
+    return head_tags(s, chars) + "\n" + sep.join(sents)
 
 
 def m_pos_words(s, chars):
@@ -62,6 +62,11 @@ def m_scene_pos(s, chars):
     return body(s, chars, s["scene_pos_nl"], by_label=False, pos_prefix=False)
 
 
+def m_newline(s, chars):
+    # pos-words と同じ文を、全体シーン文の後と人物の文の間で改行する（見出し・インデント・空行なし）。
+    return body(s, chars, s["scene_nl"], by_label=True, pos_prefix=True, sep="\n")
+
+
 METHODS = {
     "pos-words": m_pos_words,
     "no-pos": m_no_pos,
@@ -69,18 +74,29 @@ METHODS = {
     "scene-pos": m_scene_pos,
 }
 
+# 追補（人物ごとの改行）で比べる 2 通り。paragraph は pos-words と同じプロンプト。
+NEWLINE_METHODS = {
+    "paragraph": m_pos_words,
+    "newline": m_newline,
+}
+
 
 def main():
-    # 引数: [<シーン定義 YAML> [<出力ディレクトリ>]]。既定は scenes.yaml と prompts/
+    # 引数: [<シーン定義 YAML,...> [<出力ディレクトリ> [newline [<シーン ID,...>]]]]。既定は scenes.yaml と prompts/
+    # 3 番目に newline を渡すと、追補の 2 通り（NEWLINE_METHODS）を、4 番目で指定したシーンだけ書き出す
     args = sys.argv[1:]
-    scenes_file = pathlib.Path(args[0]) if args else HERE / "scenes.yaml"
+    scenes_files = [pathlib.Path(x) for x in args[0].split(",")] if args else [HERE / "scenes.yaml"]
     out = pathlib.Path(args[1]) if len(args) > 1 else HERE / "prompts"
+    methods = NEWLINE_METHODS if len(args) > 2 and args[2] == "newline" else METHODS
+    want = set(args[3].split(",")) if len(args) > 3 else None
     chars = yaml.safe_load((HERE / "characters.yaml").read_text())
-    scenes = yaml.safe_load(scenes_file.read_text())
+    scenes = [s for f in scenes_files for s in yaml.safe_load(f.read_text())]
     for s in scenes:
+        if want and s["id"] not in want:
+            continue
         d = out / s["id"]
         d.mkdir(parents=True, exist_ok=True)
-        for mid, fn in METHODS.items():
+        for mid, fn in methods.items():
             text = f"{LORA}\n{fn(s, chars)}"
             (d / f"{mid}.yaml").write_text(yaml.safe_dump({"prompt": text}, allow_unicode=True, sort_keys=False, width=10**6))
 
