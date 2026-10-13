@@ -1,0 +1,17 @@
+scene,group,method,seed,single,count,identity,action,camera,position,success,note
+p04,position,pos-words,909,0,1,1,0,1,1,0,rater_A: 左右2コマに分割（白線で区切り） / rater_B: 左右2コマに分割（白線）、並んで座る構図が不成立
+p04,position,pos-words,1010,0,1,1,0,1,1,0,rater_A: 左右2コマに分割（本棚と照明が中央で断絶） / rater_B: 左右2コマに分割（縦の境界線・背景断絶）
+p04,position,pos-words,1111,0,1,1,0,1,1,0,rater_A: 左右2コマに分割（白線で区切り） / rater_B: 左右2コマに分割（背景断絶）
+p04,position,pos-words,1212,1,1,1,1,1,1,1,rater_A: 机の向きがやや不自然だが背景は連続 / rater_B: 左の机がさやかの位置で途切れるが背景は連続
+p04,position,pos-words,1313,0,1,1,0,1,1,0,rater_A: 左右2コマに分割（白枠） / rater_B: 左右2コマに分割（白枠）
+p04,position,pos-words,1414,1,1,1,1,1,1,1,
+p04,position,pos-words,1515,1,1,1,1,1,1,1,
+p04,position,pos-words,1616,0,1,1,0,1,1,0,rater_A: 左右2コマに分割（黒線で区切り） / rater_B: 左右2コマに分割（縦の境界線）
+p04,position,no-pos,909,1,1,1,1,1,1,1,
+p04,position,no-pos,1010,1,1,1,1,1,1,1,
+p04,position,no-pos,1111,1,1,1,1,1,1,1,
+p04,position,no-pos,1212,1,1,1,1,1,1,1,
+p04,position,no-pos,1313,1,1,1,1,1,0,0,rater_A: 左右が逆（左にさやか・右にあき） / rater_B: 左右が逆（左にさやか・右にあき）
+p04,position,no-pos,1414,1,1,1,1,1,1,1,
+p04,position,no-pos,1515,1,1,1,1,1,1,1,
+p04,position,no-pos,1616,1,1,1,1,1,1,1,

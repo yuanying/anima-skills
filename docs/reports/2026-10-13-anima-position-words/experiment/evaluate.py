@@ -4,6 +4,7 @@
 使い方:
   evaluate.py prepare <生成画像ディレクトリ> <評価用ディレクトリ> [--methods a,b] [--scenes a01,p01] [--salt N]
       <評価用>/<scene>/<code>.jpg（4 seed の 2x2 グリッド。code は X1..Xn をシーンごとにシャッフル）と key.yaml を作る
+      8 seed のときは <code>_1.jpg（前半 4 seed）と <code>_2.jpg（後半 4 seed）に分ける
   evaluate.py aggregate <評価用ディレクトリ> <出力名> [--methods a,b] [--scenes a01,p01]
       <評価用>/rater_*/results_<scene>.csv（評価者ごとの判定）を書き方の名前に戻し、
       2 人の評価者の判定を項目ごとに AND で統合する（どちらかが 0 なら 0）。
@@ -11,6 +12,8 @@
   evaluate.py figures <生成画像ディレクトリ> <結果 CSV> <画像の接頭辞> [<scene>/<method>/<seed> ...]
       ../images/<接頭辞>sheet_<scene>.webp（行=書き方、列=seed。緑枠=成功、赤枠=失敗）と
       代表例 ../images/<接頭辞>pick_<scene>_<method>_<seed>.webp を作る
+
+共通オプション（サブコマンドの前に置く）: --scenes-file <シーン定義 YAML,...>（既定 scenes.yaml。カンマ区切りで複数可）、--seeds 101,202,...（既定 101/202/303/404）
 """
 import argparse
 import csv
@@ -33,8 +36,11 @@ GROUP_JA = {"action": "動作", "camera": "カメラ", "position": "位置"}
 IMAGES = HERE.parent / "images"
 
 
+SCENES_FILES = [HERE / "scenes.yaml"]
+
+
 def load_scenes(want=None):
-    sc = yaml.safe_load((HERE / "scenes.yaml").read_text())
+    sc = [s for f in SCENES_FILES for s in yaml.safe_load(f.read_text())]
     return [s for s in sc if not want or s["id"] in want]
 
 
@@ -49,15 +55,18 @@ def prepare(src, dst, methods, scenes, salt):
         scale = 768 / max(s["width"], s["height"])
         cw, chh = int(s["width"] * scale), int(s["height"] * scale)
         (dst / s["id"]).mkdir(exist_ok=True)
+        chunks = [SEEDS[i:i + 4] for i in range(0, len(SEEDS), 4)]
         for code, m in key[s["id"]].items():
-            grid = Image.new("RGB", (cw * 2 + 8, chh * 2 + 8), "black")
-            for i, seed in enumerate(SEEDS):
-                im = Image.open(src / s["id"] / f"{m}_{seed}.png").convert("RGB").resize((cw, chh))
-                d = ImageDraw.Draw(im)
-                d.rectangle([0, 0, 150, 40], fill="black")
-                d.text((8, 4), f"seed {seed}", fill="white", font=font)
-                grid.paste(im, ((i % 2) * (cw + 8), (i // 2) * (chh + 8)))
-            grid.save(dst / s["id"] / f"{code}.jpg", quality=88)
+            for n, chunk in enumerate(chunks, 1):
+                grid = Image.new("RGB", (cw * 2 + 8, chh * 2 + 8), "black")
+                for i, seed in enumerate(chunk):
+                    im = Image.open(src / s["id"] / f"{m}_{seed}.png").convert("RGB").resize((cw, chh))
+                    d = ImageDraw.Draw(im)
+                    d.rectangle([0, 0, 150, 40], fill="black")
+                    d.text((8, 4), f"seed {seed}", fill="white", font=font)
+                    grid.paste(im, ((i % 2) * (cw + 8), (i // 2) * (chh + 8)))
+                name = f"{code}.jpg" if len(chunks) == 1 else f"{code}_{n}.jpg"
+                grid.save(dst / s["id"] / name, quality=88)
     (dst / "key.yaml").write_text(yaml.safe_dump(key, sort_keys=False))
 
 
@@ -155,14 +164,14 @@ def aggregate(ev, name, methods, scenes):
             cells.append(f"{sum(vs) / len(vs):.0%}")
         out.append(f"| `{m}` | {succ}/{len(rs)} | {succ / len(rs):.0%}（{lo:.0%}〜{hi:.0%}） | " + " | ".join(cells) + " |")
 
-    out.append("\n## シーン別の成功数（4 枚中）\n")
+    out.append(f"\n## シーン別の成功数（{len(SEEDS)} 枚中）\n")
     out.append("| 書き方 | " + " | ".join(s["id"] for s in scenes) + " | 計 |")
     out.append("|---|" + "---|" * (len(scenes) + 1))
     for m in methods:
         cells = [str(sum(idx[(s["id"], m, seed)]["success"] for seed in SEEDS)) for s in scenes]
         out.append(f"| `{m}` | " + " | ".join(cells) + f" | {sum(r['success'] for r in by_m[m])} |")
 
-    out.append("\n## 項目別・シーン別の正答数（4 枚中。左から 1枚の絵 / 人数 / 属性 / 動作 / カメラ / 位置）\n")
+    out.append(f"\n## 項目別・シーン別の正答数（{len(SEEDS)} 枚中。左から 1枚の絵 / 人数 / 属性 / 動作 / カメラ / 位置）\n")
     out.append("| シーン | " + " | ".join(f"`{m}`" for m in methods) + " |")
     out.append("|---|" + "---|" * len(methods))
     for s in scenes:
@@ -250,7 +259,10 @@ def figures(src, results, prefix, picks):
 
 
 def main():
+    global SEEDS, SCENES_FILES
     ap = argparse.ArgumentParser()
+    ap.add_argument("--scenes-file")
+    ap.add_argument("--seeds")
     sub = ap.add_subparsers(dest="cmd", required=True)
     p = sub.add_parser("prepare")
     p.add_argument("src")
@@ -269,6 +281,10 @@ def main():
     f.add_argument("prefix")
     f.add_argument("picks", nargs="*")
     args = ap.parse_args()
+    if args.scenes_file:
+        SCENES_FILES = [pathlib.Path(x) for x in args.scenes_file.split(",")]
+    if args.seeds:
+        SEEDS = [int(x) for x in args.seeds.split(",")]
     if args.cmd == "figures":
         figures(pathlib.Path(args.src), pathlib.Path(args.results), args.prefix, args.picks)
         return
