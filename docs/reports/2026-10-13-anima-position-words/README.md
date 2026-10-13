@@ -13,6 +13,7 @@
 - **位置語を外すと悪くなる点もあった。** 3 人が絡むシーンでは服の色の混線が増えた（属性の正解は位置語ありで 8/8、なしで 3/8）。3 人がそれぞれ違う物を持つシーンでは、持ち物の持ち主が入れ替わった（成功 4/4 → 1/4）。
 - 位置語を外しても、相互作用のない並びでは、文に書いた順に左から並んだ（48 枚中 47 枚）。
 - この結果から、スキル `anima-prompt` では位置語を既定で残すことにした。そのうえで「相互作用のない並びで分割コマが出たら、位置語を外して左から順に書く」という対処を加えた。分割が出たシーンを新しい 8 seed で生成し直すと、修正前の形は 8 枚中 5 枚が分割され、書き直した形は 0 枚だった（[スキルへの反映と検証](#スキルへの反映と検証)）。
+- 追補として、人物の文の間に改行を入れるだけ（見出し・インデントなし）で分割コマが増えるかを 3 シーン × 8 seed で確かめた。改行あり・なしの成否は 24 組すべてで一致し、差は出なかった（[追補: 人物ごとの改行](#追補-人物ごとの改行)）。
 
 ## 背景と目的
 
@@ -391,7 +392,7 @@ In a bedroom, kutara natsumi on the left is tying the long hair of kutara sayaka
 | `characters.yaml` / `params.yaml` | キャラクターの定義と生成パラメータ（前回の記事と同じ） |
 | `scenes.yaml` | 本実験の 13 シーンの定義 |
 | `scenes_followup.yaml` | 追試で足した 3 シーンの定義 |
-| `build_prompts.py` | 4 通りの書き方でプロンプトを組み立てる（引数でシーン定義と出力先を変えられる） |
+| `build_prompts.py` | 4 通りの書き方でプロンプトを組み立てる（引数でシーン定義と出力先を変えられる。追補の 2 通りも作れる） |
 | `prompts/` / `prompts_followup/` | 実際に使った全プロンプト |
 | `generate.py` | sdctl で生成する（`--seeds` で seed を変えられる） |
 | `eval_rubric.md` | 評価基準 |
@@ -399,5 +400,68 @@ In a bedroom, kutara natsumi on the left is tying the long hair of kutara sayaka
 | `results.csv` / `results_raters.csv` / `results.md` | 本実験の判定（統合後・評価者ごと）と集計 |
 | `results_followup*.csv` / `results_followup.md` | 追試の判定と集計 |
 | `results_verify*.csv` / `results_verify.md` | スキル修正後の検証の判定と集計 |
+| `prompts_newline/` | 追補で使った全プロンプト（`paragraph` と `newline`） |
+| `results_newline*.csv` / `results_newline.md` | 追補の判定と集計 |
 
 追試は `generate.py <出力先> --scenes-file scenes_followup.yaml --prompts prompts_followup --methods pos-words,no-pos --seeds 101,202,303,404,505,606,707,808` で生成した。p04 の追加 seed は `--scenes p04 --methods pos-words,no-pos --seeds 505,606,707,808`、検証は `--seeds 909,1010,1111,1212,1313,1414,1515,1616` である。
+
+## 追補: 人物ごとの改行
+
+プロンプトを読みやすくするために、人物ごとに改行したいことがある。前回の記事で分割コマを招いたのは、位置語を見出しにし、インデントを付け、人物ごとにタグ列を並べたブロック形式だった。**見出しもインデントも付けず、自然文の人物の文の間で改行するだけ**の形は、まだ確かめていなかった。そこで、改行だけで分割コマや他の失敗が増えるかを追加で調べた。
+
+### 比べた書き方
+
+文の中身はまったく同じで、改行の有無だけが違う。どちらも位置語ありである。
+
+| 識別子 | 書き方 |
+|---|---|
+| `paragraph` | 現行スキルの形。1 行目にタグ、2 行目に全体シーン文と人物の文を 1 段落で続ける（本実験の `pos-words` と同じプロンプト） |
+| `newline` | 1 行目のタグはそのまま。全体シーン文の後と、人物の文と文の間で改行する。見出し・インデント・空行は入れない |
+
+p01 の `newline` は次のとおりである（先頭の LoRA 指定は省いた）。
+
+```
+masterpiece, best quality, score_7, highres, newest, year 2025, safe, 2girls, kutara natsumi, kutara sayaka, side-by-side, waving, cowboy shot, straight-on, looking at viewer, outdoors, park, trees, daytime, sunlight.
+Two girls are standing side by side in a park, facing the viewer.
+On the left, kutara natsumi, a girl with black hair tied in a low ponytail, blunt bangs and round glasses, wearing a green turtleneck sweater and a brown long skirt, waves at the viewer with her right hand raised and smiles.
+On the right, kutara sayaka, a girl with long straight blonde hair and a bare forehead, wearing a red hoodie and a black pleated skirt, stands with both hands on her hips and a calm expression.
+```
+
+### 条件
+
+- シーン: p04（机に並んで勉強と居眠り。分割コマが出た唯一の構図）、p01（2 人並び・左右で違う動作）、q01（ソファで別々のことをする。p04 と同じ型で、分割が出なかった構図）
+- seed: 1717、1818、1919、2020、2121、2222、2323、2424（これまでの実験で使っていないもの）。seed 以外の条件は本実験と同じ
+- 2 通り × 3 シーン × 8 seed で計 48 枚。本実験と同じ手順（書き方を伏せ、2 人が独立に判定し、AND で統合）で評価した
+
+### 結果
+
+**差は出なかった。** 同じシーン・seed の 24 組すべてで、2 通りの成否が一致した。
+
+| 書き方 | p01 | p04 | q01 | 計 | 分割コマ |
+|---|---|---|---|---|---|
+| `paragraph` | 8/8 | 1/8 | 8/8 | 17/24 | 7/24（すべて p04） |
+| `newline` | 8/8 | 1/8 | 8/8 | 17/24 | 7/24（すべて p04） |
+
+- **分割コマは、改行しても増えも減りもしなかった。** p04 ではどちらも 8 枚中 7 枚が左右 2 コマに分かれた。分割を免れたのは、どちらも同じ seed 2121 だった。p01 と q01 では、どちらも分割は 0 枚だった
+- **人数・属性・位置は、48 枚すべて正しかった。** 改行で人物の属性が混ざることも、左右が入れ替わることもなかった
+- **同じ seed なら、ほぼ同じ絵になる。** 本実験と同じく 64×64 の濃淡で画素の差を測ると、同じ seed で改行だけが違う組の平均差は 0.07、同じ書き方で seed が違う組は 0.20 だった。位置語を外したとき（0.13）よりも、さらに小さい
+- 2 人の評価者の判定は、48 枚・全項目で一致した
+
+![追補のコンタクトシート（行が書き方、列が seed。緑枠が成功、赤枠が失敗）](images/nl_sheet.webp)
+
+判定は [`experiment/results_newline.csv`](experiment/results_newline.csv) にある。
+
+### 結論とスキルへの反映
+
+人物の文の間に改行を入れるだけでは、分割コマも他の失敗も増えなかった。前回の記事で分割を招いたのは、改行そのものではなく、位置語の見出し・インデント・人物ごとのタグ列を組み合わせたブロック形式だったと考えられる。
+
+`skills/anima-prompt/SKILL.md` は、「文と文の間は改行しない」「2 行目は 1 段落」という記述を改めた。人物の文の間の改行は許し、避けるのは見出し・インデント・タグ列のブロック形式に絞った。
+
+### この追補の限界
+
+- **p04 は、改行なしでも 8 枚中 7 枚が分割される seed の組だった。** 天井に近いので、p04 で改行が分割を増やすかどうかは、この枚数では見分けにくい。言えるのは、同じ seed で分割の有無が 1 枚も変わらなかったことまでである（本実験・追試・検証の p04 では、位置語ありで 20 枚中 13 枚が分割されていた）
+- **分割の出にくい p01 と q01 では、改行で分割が新しく生まれることはなかった**（各 8 枚）。ただし 1 条件 8 枚なので、まれに起きる程度の差は検出できない
+- **2 人の構図だけで確かめた。** 3 人の構図、持ち物の言い直し文を最後の行に置く形、位置語を外した形での改行は試していない
+- 改行は 1 つずつで、空行は入れていない。空行を入れた形は試していない
+
+追補は `build_prompts.py scenes.yaml,scenes_followup.yaml prompts_newline newline p01,p04,q01` でプロンプトを作り、`generate.py <出力先> --scenes-file scenes.yaml,scenes_followup.yaml --scenes p01,p04,q01 --prompts prompts_newline --seeds 1717,1818,1919,2020,2121,2222,2323,2424` で生成した。評価の集計は [`experiment/results_newline.md`](experiment/results_newline.md) にある。

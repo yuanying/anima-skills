@@ -1,0 +1,49 @@
+scene,group,method,seed,single,count,identity,action,camera,position,success,note
+p01,position,paragraph,1717,1,1,1,1,1,1,1,
+p01,position,paragraph,1818,1,1,1,1,1,1,1,
+p01,position,paragraph,1919,1,1,1,1,1,1,1,
+p01,position,paragraph,2020,1,1,1,1,1,1,1,rater_A: 背景が矩形の枠内に収まり周囲が白い（場面は1つ）
+p01,position,paragraph,2121,1,1,1,1,1,1,1,
+p01,position,paragraph,2222,1,1,1,1,1,1,1,
+p01,position,paragraph,2323,1,1,1,1,1,1,1,
+p01,position,paragraph,2424,1,1,1,1,1,1,1,
+p01,position,newline,1717,1,1,1,1,1,1,1,rater_A: 背景が矩形の枠内に収まり周囲が白い（場面は1つ） / rater_B: 背景が帯状に途切れ下部が白（2人は同一の絵）
+p01,position,newline,1818,1,1,1,1,1,1,1,
+p01,position,newline,1919,1,1,1,1,1,1,1,
+p01,position,newline,2020,1,1,1,1,1,1,1,rater_A: 背景が矩形の枠内に収まり周囲が白い（場面は1つ） / rater_B: 背景が帯状に途切れ下部が白（2人は同一の絵）
+p01,position,newline,2121,1,1,1,1,1,1,1,
+p01,position,newline,2222,1,1,1,1,1,1,1,
+p01,position,newline,2323,1,1,1,1,1,1,1,
+p01,position,newline,2424,1,1,1,1,1,1,1,
+p04,position,paragraph,1717,0,1,1,0,0,1,0,rater_A: 左右2コマに分割、あきが横向き / rater_B: 左右2コマに分割、あきが横向き
+p04,position,paragraph,1818,0,1,1,0,1,1,0,rater_A: 左右2コマに分割 / rater_B: 左右2コマに分割
+p04,position,paragraph,1919,0,1,1,0,1,1,0,rater_A: 左右2コマに分割 / rater_B: 左右2コマに分割
+p04,position,paragraph,2020,0,1,1,0,1,1,0,rater_A: 左右2コマに分割 / rater_B: 左右2コマに分割
+p04,position,paragraph,2121,1,1,1,1,1,1,1,
+p04,position,paragraph,2222,0,1,1,0,1,1,0,rater_A: 左右2コマに分割 / rater_B: 左右2コマに分割
+p04,position,paragraph,2323,0,1,1,0,1,1,0,rater_A: 左右2コマに分割 / rater_B: 左右2コマに分割
+p04,position,paragraph,2424,0,1,1,0,0,1,0,rater_A: 左右2コマに分割、あきが横向き / rater_B: 左右2コマに分割、あきが横向き
+p04,position,newline,1717,0,1,1,0,0,1,0,rater_A: 左右2コマに分割、あきが横向き / rater_B: 左右2コマに分割、あきが横向き
+p04,position,newline,1818,0,1,1,0,1,1,0,rater_A: 左右2コマに分割 / rater_B: 左右2コマに分割
+p04,position,newline,1919,0,1,1,0,1,1,0,rater_A: 左右2コマに分割 / rater_B: 左右2コマに分割
+p04,position,newline,2020,0,1,1,0,0,1,0,rater_A: 左右2コマに分割、あきが横向き / rater_B: 左右2コマに分割、あきが横向き
+p04,position,newline,2121,1,1,1,1,1,1,1,rater_A: 長机ではなく別々の机 / rater_B: 長机ではなく別々の机（コマ分割はなし）
+p04,position,newline,2222,0,1,1,0,1,1,0,rater_A: 左右2コマに分割 / rater_B: 左右2コマに分割
+p04,position,newline,2323,0,1,1,0,1,1,0,rater_A: 左右2コマに分割 / rater_B: 左右2コマに分割
+p04,position,newline,2424,0,1,1,0,0,1,0,rater_A: 左右2コマに分割、あきが横向き / rater_B: 左右2コマに分割、あきが横向き
+q01,position,paragraph,1717,1,1,1,1,1,1,1,
+q01,position,paragraph,1818,1,1,1,1,1,1,1,
+q01,position,paragraph,1919,1,1,1,1,1,1,1,
+q01,position,paragraph,2020,1,1,1,1,1,1,1,
+q01,position,paragraph,2121,1,1,1,1,1,1,1,
+q01,position,paragraph,2222,1,1,1,1,1,1,1,
+q01,position,paragraph,2323,1,1,1,1,1,1,1,
+q01,position,paragraph,2424,1,1,1,1,1,1,1,
+q01,position,newline,1717,1,1,1,1,1,1,1,
+q01,position,newline,1818,1,1,1,1,1,1,1,
+q01,position,newline,1919,1,1,1,1,1,1,1,
+q01,position,newline,2020,1,1,1,1,1,1,1,
+q01,position,newline,2121,1,1,1,1,1,1,1,
+q01,position,newline,2222,1,1,1,1,1,1,1,
+q01,position,newline,2323,1,1,1,1,1,1,1,
+q01,position,newline,2424,1,1,1,1,1,1,1,
