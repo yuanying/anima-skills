@@ -1,0 +1,75 @@
+# 追試用のシーン定義（書式は scenes.yaml と同じ）。
+# 本実験で分割コマが出た p04 と同じ型の「相互作用のない人物が並んで別々のことをする」シーン。
+# pos-words と no-pos だけを 8 seed で生成し、分割コマと左右の正しさを見る。
+- id: q01
+  title: ソファで別々のことをする
+  group: position
+  width: 1344
+  height: 768
+  count: 2girls
+  scene_nl: Two girls are sitting next to each other on a sofa in a living room, each absorbed in something different.
+  scene_pos_nl: In a living room, kutara natsumi on the left and kutara aki on the right are sitting next to each other on a sofa, each absorbed in something different.
+  scene_tags: sitting, couch, side-by-side
+  relation_nl: kutara natsumi sits to the left of kutara aki.
+  chars:
+    - who: natsumi
+      pos: On the left
+      label: the girl on the left
+      pose_nl: reads a manga with both hands, smiling at the page
+    - who: aki
+      pos: On the right
+      label: the girl on the right
+      pose_nl: plays a handheld game console, leaning forward with a focused expression
+  camera_tags: upper body, straight-on
+  env_tags: indoors, living room, couch, cushion, window, afternoon
+  criteria: 2人がソファに並んで座る。左=なつみが漫画を読む。右=あきが携帯ゲーム機で遊ぶ。
+
+- id: q02
+  title: キッチンで料理と皿洗い
+  group: position
+  width: 1344
+  height: 768
+  count: 2girls
+  scene_nl: Two girls are standing side by side at a kitchen counter, each doing a different chore.
+  scene_pos_nl: In a kitchen, kutara sayaka on the left and kutara natsumi on the right are standing side by side at the counter, each doing a different chore.
+  scene_tags: standing, kitchen, side-by-side, cooking
+  relation_nl: kutara sayaka stands to the left of kutara natsumi.
+  chars:
+    - who: sayaka
+      pos: On the left
+      label: the girl on the left
+      pose_nl: chops carrots on a cutting board with a kitchen knife
+    - who: natsumi
+      pos: On the right
+      label: the girl on the right
+      pose_nl: washes a plate in the sink with a sponge
+  camera_tags: cowboy shot, straight-on
+  env_tags: indoors, kitchen, counter, sink, window, morning
+  criteria: 2人がキッチンのカウンターに並んで立つ。左=さやかがまな板で人参を切る。右=なつみがシンクで皿を洗う。
+
+- id: q03
+  title: バス停で3人が別々のことをする
+  group: position
+  width: 1344
+  height: 768
+  count: 3girls
+  scene_nl: Three girls are waiting at a bus stop, each passing the time in a different way.
+  scene_pos_nl: At a bus stop, kutara aki on the left, kutara natsumi in the center and kutara sayaka on the right are waiting, each passing the time in a different way.
+  scene_tags: standing, bus stop, waiting
+  relation_nl: kutara aki stands to the left of kutara natsumi, and kutara sayaka stands to the right of kutara natsumi.
+  chars:
+    - who: aki
+      pos: On the left
+      label: the girl on the left
+      pose_nl: eats a melon bread, holding it with both hands
+    - who: natsumi
+      pos: In the center
+      label: the girl in the center
+      pose_nl: looks down at a smartphone in her hand
+    - who: sayaka
+      pos: On the right
+      label: the girl on the right
+      pose_nl: listens to music with headphones, eyes closed
+  camera_tags: cowboy shot, straight-on
+  env_tags: outdoors, bus stop, street, cloudy sky, daytime
+  criteria: 3人がバス停で待つ。左=あきがメロンパンを食べる。中央=なつみがスマホを見る。右=さやかがヘッドホンで音楽を聴く。

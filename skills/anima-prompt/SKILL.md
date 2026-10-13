@@ -40,11 +40,9 @@ python skills/anima-prompt/scripts/tag_search.py "青い目" --limit 5
 
 キャラクターの人数に上限はない。ただし人数が増えるほど失敗が増える（後述）。
 
-1 人の絵はこの検証の対象外なので、従来の形（「出力1」の「1人の場合」）を使う。
+1 人の絵は、従来の形（「出力1」の「1人の場合」）を使う。
 
-この構造は 2〜3 人で 9 通りの書き方を比べた検証（`docs/reports/2026-10-09-anima-multi-character/`）で決めた。この形（`hybrid-tags-nl`）は成功率 81% で 1 位、旧来の「位置語の見出し + インデントしたブロック」は 71% だった。修正後の再検証でも、この構造は旧来の形より多く成功した（同じ評価者による再判定で 73% と 65%）。相互作用のない 2 人並びでは、旧来の形が 4 枚とも左右 2 枚の分割コマになった。この構造では 1 枚もならなかった。
-
-3 人以上でも、キャラごとの Danbooru タグ列は足さない。各キャラの文の直後にタグ列を足した形も試したが、3 人の構図の成功数・人数の正答率とも差が出なかった（成功は 20 枚中 11 枚と 12 枚）。
+3 人以上でも、キャラごとの Danbooru タグ列は足さない。
 
 ### タグ記法
 
@@ -52,7 +50,7 @@ python skills/anima-prompt/scripts/tag_search.py "青い目" --limit 5
 - 例外: `score_7`, `score_1` 等のスコアタグのみアンダースコア
 - アーティストタグは `@` 必須: `@wlop`, `@fkey`（`@` がないと効果が極めて弱い）
 - キャラクター名の作品名は括弧: `hatsune miku (vocaloid)`
-- `BREAK` タグは Anima では効果なし → 使用しない（検証でも、`BREAK` で区切ったタグ列の成功率は区切りなしと同じ 2% だった）
+- `BREAK` タグは Anima では効果なし → 使用しない
 - GelbooruとDanbooruでタグが異なる場合はGelbooru優先
 - **代名詞（`he` / `she` / `it`）は自然文で使わない**。Anima は指示対象の解決が苦手で、特に `it` は何を指すか解釈できない。`the girl on the left`, `the plate` のように名詞で書く
 
@@ -141,14 +139,14 @@ exactly four fingers on each hand, four digits on each hand, thumb and three fin
 
 ### キャラクターの描き分け（重要）
 
-複数キャラクターの最大の失敗要因は**属性の混線**（片方の髪色・眼鏡・服の色がもう片方に移るなど）。これを防ぐのは**自然文**である。検証では、タグ列だけで書いた方式は人数こそ合うものの属性がキャラ間で入れ替わり、成功率は 2〜21% にとどまった。自然文でキャラを描写した方式は 71〜81% だった。
+複数キャラクターの最大の失敗要因は**属性の混線**（片方の髪色・眼鏡・服の色がもう片方に移るなど）。これを防ぐのは**自然文**である。タグ列だけで書くと、人数は合っても属性がキャラ間で入れ替わりやすい。
 
 - 人数タグを 1 行目に必ず明示する
 - **各キャラの外見・服装・動作は、自然文の 1 文に「位置語, 名前, 外見, 服装, 動作」の順でまとめる**。他のキャラの記述を挟まない
-- **名前の直後に外見を続けるのは、自然文の中で行う**。公式 README の注意（名前だけを並べると誰がどの外見かを取り違える）は、タグ列の中で `<名前> with <外見タグ>` と書いても効かない（検証で成功率 4%）。自然文の中で名前と外見を隣接させると効く
-- 区切り記号では混線を防げない。ラベルとコロン（`the girl on the left: <タグ列>`）、改行、`BREAK` でタグ列を区切っても、属性の正答率は 4〜44% だった
+- **名前の直後に外見を続けるのは、自然文の中で行う**。公式 README の注意（名前だけを並べると誰がどの外見かを取り違える）に従うときも、タグ列の中で `<名前> with <外見タグ>` と書くのでは効かない。自然文の中で名前と外見を隣接させる
+- 区切り記号では混線を防げない。ラベルとコロン（`the girl on the left: <タグ列>`）、改行、`BREAK` でタグ列を区切る書き方はしない
 - キャラクターを区別する属性が**対照的**（黒髪×金髪、服の色を分けるなど）な方が安定
-- **2人は安定、3人は失敗が増える**。3人では、人数が 4 人に増える失敗が最も多い（検証での成功は最良の書き方でも 20 枚中 13 枚）。4人以上は検証していない
+- **2人は安定、3人は失敗が増える**。3人では、人数が 4 人に増える失敗が最も多い
 - 特定のキャラだけに小物を付けたい場合は、タグではなく**自然文で所属を書く**（`the girl on the left is wearing glasses`）
 
 **位置語**: 各キャラの文の先頭に置く。人数と構図に応じて選ぶ。
@@ -162,6 +160,15 @@ exactly four fingers on each hand, four digits on each hand, thumb and three fin
 | 奥行き | `In the foreground,` / `In the background,` |
 | 1人 | 位置語は使わない |
 
+位置語を付けるかどうかの判断:
+
+- 位置語は既定で付ける
+- **動作やカメラワークを優先したい構図でも、位置語は外さなくてよい**。位置語の有無で、動作の正確さやカメラ指定への従い方は変わらないため
+- **3 人の構図と、持ち物を言い直す構図では位置語を残す**。外すと服の色の混線や、持ち物の持ち主の入れ替わりが増えるため
+- **位置語は画面上の左右を決める**。外すと左右はモデル任せになる。相互作用のない並びでは文に書いた順に左から並びやすいが、相互作用のある構図では意図と逆の左右になることがある
+- **分割コマが出たら位置語を外す**。相互作用のない 2 人が並んで別々のことをする構図では、1 段落で書いても左右 2 コマに分かれることがある（全体シーン文にだけ位置を書いても同じ）。そのときは位置語を外し、左に置きたいキャラから順に文を書く。分割が出るのは一部の構図に限られるため、最初から外す必要はない
+- 位置語を外したときは、相互作用の相手を名前で指す（`stands behind kutara sayaka`）。位置語があるときは位置付きの呼び名（`the girl on the right`）で指す
+
 **キャラの文の中身**:
 
 ```
@@ -170,7 +177,7 @@ On the left, kutara natsumi, a girl with black hair tied in a low ponytail, blun
 
 - 「位置語 → 名前 → 外見（髪・目など） → 服装 → 動作」の順。名前がないオリジナルキャラは `a girl with ...` から始める
 - タグにない語彙（`ash blonde`、素材や質感の説明など）も自由に書いてよい
-- 文と文の間は改行しない。**位置語を見出しにして改行・インデントでキャラごとに区切ると、相互作用のない並びで「キャラごとに別のコマ」の分割画像になることがある**（検証の 2 人並びで 4/4）
+- 文と文の間は改行しない。**位置語を見出しにして改行・インデントでキャラごとに区切ると、相互作用のない並びで「キャラごとに別のコマ」の分割画像になることがある**。1 段落で書いても分割コマになる構図はある。そのときの対処は上の「位置語を付けるかどうかの判断」を参照
 
 **持ち物の言い直し（任意）**: キャラごとに違う持ち物があるときは、段落の最後に持ち主を 1 文で言い直す。人物はキャラの文と同じ位置語の呼び名（`the girl on the left`）で指す。
 
@@ -178,8 +185,8 @@ On the left, kutara natsumi, a girl with black hair tied in a low ponytail, blun
 The yellow umbrella belongs to the girl on the left, the blue balloon to the girl in the center, and the red book to the girl on the right.
 ```
 
-- 検証では、3 人がそれぞれ違う物を持つ構図で、言い直しありが 4/4、なしが 2/4 だった
-- 人物どうしの関係を言い直す文は、全体では効果が出なかった（言い直しありとなしで成功 35/48 と 36/48）。特に、`the girl with glasses` のような外見の呼び名で人物を言い直すと、別の人物と解釈されて人数が増えることがある（前景・遠景の構図で 4 人出現が 3/4。言い直しなしでは 0/4）。関係は全体シーン文と各キャラの動作で書けば足りる
+- 言い直しの呼び名は位置語の呼び名にする。名前（`belongs to kutara natsumi`）で言い直すと、持ち主が入れ替わりやすいため
+- 人物どうしの関係を言い直す文は無くてよい。関係は全体シーン文と各キャラの動作で書けば足りる。特に、`the girl with glasses` のような外見の呼び名で人物を言い直すと、別の人物と解釈されて人数が増えることがある
 
 ### カメラ・構図
 
@@ -192,9 +199,9 @@ shot size, camera position, camera angle, lens, focus, composition
 dynamic diagonal composition, extreme dutch angle, dramatic perspective, strong foreshortening, foreground blur, layered depth
 ```
 
-複数人物の難しい構図でも、キャラを自然文で書けば多くは通る。検証では肩車、逆さまの人物と正立の人物、真上からの俯瞰、極端な煽り、向き合ってのハイタッチが、ほぼ毎回意図どおりになった。
+複数人物の難しい構図でも、キャラを自然文で書けば多くは通る（肩車、逆さまの人物と正立の人物、真上からの俯瞰、極端な煽り、向き合ってのハイタッチなど）。
 
-一方、次の構図はプロンプトの書き方だけではほとんど成功しなかった。ユーザーに伝え、seed を多めに回すか、構図を変える・領域指定やポーズ参照（ControlNet など）を使うことを提案する。
+一方、次の構図はプロンプトの書き方だけでは成功しにくい。ユーザーに伝え、seed を多めに回すか、構図を変える・領域指定やポーズ参照（ControlNet など）を使うことを提案する。
 
 - **3人の縦積み**（3 段の肩車タワー）: 段数が 4 段に増える、上下の順序や手の位置がそろわない
 - **前景と遠景の極端なサイズ差**（手前に大きな顔、遠くに小さな全身）: 遠景の人物が大きすぎる、遠景に余分な人物が増える
@@ -371,6 +378,7 @@ negative_prompt: "<negative>"
 - キャラクター名がある場合は 1 行目に名前だけを並べ、2 行目の各キャラの文で `hatsune miku (vocaloid), a girl with ...` のように名前の直後に外見を書く
 - 2 行目は 1 段落。キャラの文の間で改行しない、インデントしない
 - 持ち物の言い直しは、キャラごとの持ち物がなければ省く
+- 位置語は既定で付ける。外すのは、相互作用のない並びで分割コマが出たときだけ（「位置語を付けるかどうかの判断」）。外すときは左に置くキャラから順に文を書き、相互作用の相手は名前で指す
 - **ユーザーが指定しなかった任意項目は省く**。特に `<@artist>, <style_tags>` は指定がなければ丸ごと落とす
 - 空行は入れない
 
@@ -385,7 +393,16 @@ negative_prompt: "worst quality, low quality, score_1, score_2, score_3, artist 
 
 この例は**ユーザーが `@wlop` を指定した場合**のもの。安全タグと同様、アーティストタグも指定がなければ省く。
 
-**1人の場合:** 複数人の検証の対象外なので、従来の形のまま使う。全体シーン文の直後に、そのキャラの自然文 1 文と Danbooru タグ列をインデントして置く。
+**分割コマが出たときの書き直し例（2人、位置語なし）:** 相互作用のない並びで左右 2 コマに分かれたら、位置語を外し、左に置くキャラから順に書く。
+
+```yaml
+prompt: |
+  masterpiece, best quality, score_7, highres, newest, year 2025, safe, 2girls, kutara aki, kutara sayaka, sitting, desk, side-by-side, upper body, straight-on, indoors, library, bookshelves, desk lamp, evening.
+  Two girls are sitting next to each other at a long desk in a library, each doing something different. kutara aki, a slender flat-chested futanari girl with a short black bob cut, blunt bangs and freckles, wearing a blue t-shirt and khaki cargo pants, writes in a notebook with a pencil, looking down seriously. kutara sayaka, a girl with long straight blonde hair and a bare forehead, wearing a red hoodie and a black pleated skirt, has fallen asleep with her head resting on her folded arms on the desk.
+negative_prompt: "worst quality, low quality, score_1, score_2, score_3, artist name, blurry, jpeg artifacts, chromatic aberration, duplicate, twins, clone"
+```
+
+**1人の場合:** 従来の形のまま使う。全体シーン文の直後に、そのキャラの自然文 1 文と Danbooru タグ列をインデントして置く。
 
 ```yaml
 prompt: |

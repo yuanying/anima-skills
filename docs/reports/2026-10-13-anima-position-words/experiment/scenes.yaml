@@ -1,0 +1,332 @@
+# 構図シーン定義。4 つの書き方（build_prompts.py の METHODS）は、この同じ要素からプロンプトを組み立てる。
+#
+# - group:        action（動作・相互作用が主役）/ camera（カメラが自由なほうが自然）/ position（位置を守る必要がある）
+# - scene_nl:     全体シーン文。位置語も人物名も含めない（pos-words / no-pos / relational で共通）
+# - scene_pos_nl: scene-pos 用の全体シーン文。人物名と位置をこの 1 文にだけ書く
+# - relation_nl:  relational 用の関係文。絶対位置（左・右・中央）を使わず、人物どうしの相対関係を名前で書く
+# - chars:        キャラごとの位置語（pos）、位置付きの呼び名（label）、動作（pose_nl）
+#                 pose_nl の {natsumi} などは相手の呼び方。pos-words では相手の label、それ以外では相手のトリガーワードに置き換える
+# - belongings_nl: 持ち物の言い直し（任意）。{natsumi} などの置き換えは pose_nl と同じ
+# - scene_tags / camera_tags / env_tags: 1 行目のタグ（全書き方で共通）
+# - criteria:     評価で確認する「意図」（評価者に渡す）。position グループだけ左右・中央の正しさを判定する
+#
+# 服装は characters.yaml の固定値を全シーンで使う。
+
+# ---- action: 動作・相互作用が主役 ----
+- id: a01
+  title: 本を手渡す
+  group: action
+  width: 1344
+  height: 768
+  count: 2girls
+  scene_nl: Two friends are in a classroom after school, and one of them hands a book to the other.
+  scene_pos_nl: In a classroom after school, kutara natsumi on the left hands a book to kutara sayaka on the right.
+  scene_tags: giving, holding book, facing another
+  relation_nl: kutara natsumi and kutara sayaka face each other, and the book passes from the hands of kutara natsumi into the hands of kutara sayaka.
+  chars:
+    - who: natsumi
+      pos: On the left
+      label: the girl on the left
+      pose_nl: holds out a red book with both hands, offering it to {sayaka}
+    - who: sayaka
+      pos: On the right
+      label: the girl on the right
+      pose_nl: reaches out with both hands to take the book from {natsumi} and smiles
+  camera_tags: cowboy shot, from side
+  env_tags: indoors, classroom, desks, window, afternoon sunlight
+  criteria: 2人。なつみ（眼鏡・黒髪ポニーテール・緑セーター）が赤い本を差し出し、さやか（金髪ロング・赤パーカー）がそれを受け取ろうと手を伸ばしている。本は1冊で二人の手の間にある。二人は向き合う。差し出す側と受け取る側が逆なら動作は 0。
+
+- id: a02
+  title: 髪を結ってあげる
+  group: action
+  width: 1024
+  height: 1024
+  count: 2girls
+  scene_nl: In a bedroom, one girl is tying the other girl's long hair into a ponytail.
+  scene_pos_nl: In a bedroom, kutara natsumi on the left is tying the long hair of kutara sayaka on the right into a ponytail.
+  scene_tags: tying hair, hair tie, sitting, standing
+  relation_nl: kutara natsumi stands directly behind kutara sayaka, and kutara sayaka sits in front of kutara natsumi.
+  chars:
+    - who: natsumi
+      pos: On the left
+      label: the girl on the left
+      pose_nl: stands behind {sayaka} and gathers the long blonde hair of {sayaka} in her hands, tying it with a hair tie
+    - who: sayaka
+      pos: On the right
+      label: the girl on the right
+      pose_nl: sits on a stool in front of {natsumi} with her eyes closed and a relaxed smile
+  camera_tags: upper body, from side
+  env_tags: indoors, bedroom, dresser, mirror, warm lighting
+  criteria: 2人。なつみが立って、座っているさやかの背後にいる。なつみの両手がさやかの金髪をまとめて結んでいる。さやかは座っている。結う側と結われる側が逆、またはなつみが自分の髪を触っているなら動作は 0。
+
+- id: a03
+  title: 浜辺で追いかける
+  group: action
+  width: 1344
+  height: 768
+  count: 2girls
+  scene_nl: On a sandy beach, one girl is chasing the other girl along the water's edge.
+  scene_pos_nl: On a sandy beach, kutara aki on the left is chasing kutara natsumi on the right along the water's edge.
+  scene_tags: running, chasing, barefoot, looking back
+  relation_nl: kutara aki runs a few steps behind kutara natsumi, trying to catch her.
+  chars:
+    - who: aki
+      pos: On the left
+      label: the girl on the left
+      pose_nl: runs after {natsumi} with one arm stretched out toward her, laughing
+    - who: natsumi
+      pos: On the right
+      label: the girl on the right
+      pose_nl: runs away from {aki}, looking back over her shoulder with a playful smile
+  camera_tags: full body, from side, motion blur
+  env_tags: outdoors, beach, ocean, splashing, summer, daytime
+  criteria: 2人とも走っている。あき（黒髪ボブ・そばかす・青Tシャツ・カーキのパンツ）が後ろから、なつみに手を伸ばして追いかける。なつみが前を走り、振り返っている。追う側と追われる側が逆なら動作は 0。並んで走っているだけ（追いかけに見えない）も 0。
+
+- id: a04
+  title: 3人で長縄跳び
+  group: action
+  width: 1344
+  height: 768
+  count: 3girls
+  scene_nl: Three friends are playing long jump rope in a schoolyard; two of them swing the rope while the third jumps over it.
+  scene_pos_nl: In a schoolyard, kutara natsumi on the left and kutara aki on the right swing a long jump rope while kutara sayaka in the center jumps over it.
+  scene_tags: jump rope, jumping, holding rope
+  relation_nl: kutara natsumi and kutara aki stand facing each other and swing the rope between them, and kutara sayaka jumps between kutara natsumi and kutara aki.
+  chars:
+    - who: natsumi
+      pos: On the left
+      label: the girl on the left
+      pose_nl: holds one end of a long jump rope and swings it
+    - who: sayaka
+      pos: In the center
+      label: the girl in the center
+      pose_nl: jumps high over the rope with both feet off the ground
+    - who: aki
+      pos: On the right
+      label: the girl on the right
+      pose_nl: holds the other end of the same rope and swings it
+  camera_tags: full body, wide shot
+  env_tags: outdoors, schoolyard, blue sky, daytime
+  criteria: 3人。なつみとあきが1本の長縄の両端を持って回し、さやかがその間で跳んでいる（両足が地面から離れている）。縄が1本でつながっていない、跳ぶ人が違う（さやか以外が跳ぶ）なら動作は 0。
+
+# ---- camera: カメラが自由なほうが自然 ----
+- id: c01
+  title: 後ろ姿で夕日を見る
+  group: camera
+  width: 1344
+  height: 768
+  count: 2girls
+  scene_nl: Two girls are sitting together on a bench on a hill, seen from behind, watching the sunset.
+  scene_pos_nl: Seen from behind, kutara natsumi on the left and kutara sayaka on the right are sitting together on a bench on a hill, watching the sunset.
+  scene_tags: sitting, bench, head on another's shoulder, facing away
+  relation_nl: kutara natsumi leans against kutara sayaka, and both of them have their backs to the viewer.
+  chars:
+    - who: natsumi
+      pos: On the left
+      label: the girl on the left
+      pose_nl: sits on the bench with her back to the viewer and rests her head on the shoulder of {sayaka}
+    - who: sayaka
+      pos: On the right
+      label: the girl on the right
+      pose_nl: sits on the bench with her back to the viewer and puts one arm around the back of {natsumi}
+  camera_tags: wide shot, from behind
+  env_tags: outdoors, hill, sunset, orange sky, town in the distance
+  criteria: 2人とも背中をこちらに向けている（後ろ姿）。なつみがさやかの肩に頭を乗せ、さやかが片腕をなつみの背中に回す。属性は後ろ姿で見える髪型・髪色・服の色で判定する（眼鏡は見えなくてよい）。顔がこちらを向いているならカメラは 0。
+
+- id: c02
+  title: 斜め俯瞰でトランプ
+  group: camera
+  width: 1024
+  height: 1024
+  count: 3girls
+  scene_nl: Three friends are sitting on the floor around a low table playing cards, seen from high above at a slanted angle.
+  scene_pos_nl: Seen from high above at a slanted angle, kutara natsumi on the left, kutara sayaka in the center and kutara aki on the right are sitting on the floor around a low table playing cards.
+  scene_tags: playing card, card game, sitting, table
+  relation_nl: kutara natsumi, kutara sayaka and kutara aki sit in a circle around the table, facing one another.
+  chars:
+    - who: natsumi
+      pos: On the left
+      label: the girl on the left
+      pose_nl: holds a fan of playing cards close to her chest and grins
+    - who: sayaka
+      pos: In the center
+      label: the girl in the center
+      pose_nl: slams a card down on the table
+    - who: aki
+      pos: On the right
+      label: the girl on the right
+      pose_nl: leans forward to peek at the cards of {natsumi}
+  camera_tags: from above, high angle, wide shot
+  env_tags: indoors, living room, low table, snacks, warm lighting
+  criteria: 3人。斜め上からの俯瞰。3人がテーブルを囲んで座る（横一列にカメラを向いて並ぶのではない）。なつみがカードを胸元に扇状に持ち、さやかがカードをテーブルに叩きつけ、あきが身を乗り出してなつみのカードを覗く。3人の動作のうち 2 つ以上が読み取れれば動作は 1。
+
+- id: c03
+  title: オーバーショルダー
+  group: camera
+  width: 1344
+  height: 768
+  count: 2girls
+  scene_nl: Two girls are talking across a café table, framed as an over-the-shoulder shot.
+  scene_pos_nl: Framed as an over-the-shoulder shot, kutara aki in the foreground and kutara natsumi in the background are talking across a café table.
+  scene_tags: talking, sitting, table, cup
+  relation_nl: The camera looks over the shoulder of kutara aki at kutara natsumi, who sits across the table from kutara aki.
+  chars:
+    - who: aki
+      pos: In the foreground
+      label: the girl in the foreground
+      pose_nl: is seen from behind, her back, shoulder and the back of her head large and close to the camera
+    - who: natsumi
+      pos: In the background
+      label: the girl in the background
+      pose_nl: sits across the table facing {aki} and the viewer, talking and gesturing with one hand
+  camera_tags: over-the-shoulder shot, depth of field, upper body
+  env_tags: indoors, cafe, coffee cup, window, daytime
+  criteria: 2人。あきが手前で後ろ向き（後頭部・肩・背中が画面の端に大きく入る）、なつみが奥で正面を向いて話している。手前と奥でサイズ差がある。2人が横に並んでカメラを向いているならカメラは 0。手前が後ろ向きでも、手前の人物があきでなくなつみなら位置・役割の取り違えとして動作は 0。
+
+- id: c04
+  title: ダッチアングルで駆け寄る
+  group: camera
+  width: 1024
+  height: 1024
+  count: 2girls
+  scene_nl: Two girls are dashing down a city street toward the viewer, captured with a strongly tilted camera.
+  scene_pos_nl: Captured with a strongly tilted camera, kutara sayaka on the left and kutara aki on the right are dashing down a city street toward the viewer.
+  scene_tags: running, holding hands, running towards viewer, reaching towards viewer
+  relation_nl: kutara sayaka and kutara aki run next to each other holding hands.
+  chars:
+    - who: sayaka
+      pos: On the left
+      label: the girl on the left
+      pose_nl: sprints toward the viewer, her free hand reaching out toward the camera
+    - who: aki
+      pos: On the right
+      label: the girl on the right
+      pose_nl: runs beside {sayaka}, holding the hand of {sayaka}
+  camera_tags: dutch angle, from below, full body, foreshortening
+  env_tags: outdoors, city street, crosswalk, buildings, daytime
+  criteria: 画面がはっきり傾いている（ダッチアングル）。2人がこちらへ走ってくる。2人が手をつないでいる。さやかの空いた手がカメラに向かって伸びる（手つなぎと手を伸ばす動作のうち、手つなぎは必須）。
+
+- id: c05
+  title: 頬を寄せて自撮り（顔の接写）
+  group: camera
+  width: 1344
+  height: 768
+  count: 2girls
+  scene_nl: Two best friends press their cheeks together for a selfie, shown in a close-up of their faces.
+  scene_pos_nl: Shown in a close-up of their faces, kutara natsumi on the left and kutara sayaka on the right press their cheeks together for a selfie.
+  scene_tags: cheek-to-cheek, selfie, holding phone, one eye closed
+  relation_nl: The faces of kutara natsumi and kutara sayaka touch cheek to cheek.
+  chars:
+    - who: natsumi
+      pos: On the left
+      label: the girl on the left
+      pose_nl: presses her cheek against the cheek of {sayaka} and winks
+    - who: sayaka
+      pos: On the right
+      label: the girl on the right
+      pose_nl: presses her cheek against the cheek of {natsumi}, holding up a smartphone at arm's length and smiling
+  camera_tags: close-up, portrait, looking at viewer
+  env_tags: outdoors, amusement park, ferris wheel, bokeh, daytime
+  criteria: 顔の接写（2人の顔が画面の大部分を占め、ほぼ胸から上）。頬と頬が触れている。なつみがウインク、さやかが腕を伸ばしてスマホを持つ（スマホが写るか、腕がカメラ側へ伸びている）。腰から上以上の引きの絵ならカメラは 0。
+
+# ---- position: 位置を守る必要がある ----
+- id: p01
+  title: 2人並び・左右で違う動作
+  group: position
+  width: 1344
+  height: 768
+  count: 2girls
+  scene_nl: Two girls are standing side by side in a park, facing the viewer.
+  scene_pos_nl: In a park, kutara natsumi stands on the left and kutara sayaka stands on the right, side by side, facing the viewer.
+  scene_tags: side-by-side, waving
+  relation_nl: kutara natsumi stands to the left of kutara sayaka.
+  chars:
+    - who: natsumi
+      pos: On the left
+      label: the girl on the left
+      pose_nl: waves at the viewer with her right hand raised and smiles
+    - who: sayaka
+      pos: On the right
+      label: the girl on the right
+      pose_nl: stands with both hands on her hips and a calm expression
+  camera_tags: cowboy shot, straight-on, looking at viewer
+  env_tags: outdoors, park, trees, daytime, sunlight
+  criteria: 2人。左=なつみが片手を挙げて手を振る。右=さやかが両手を腰に当てる。左右は画面に向かっての左右。
+
+- id: p02
+  title: 3人並び・別々のポーズ
+  group: position
+  width: 1344
+  height: 768
+  count: 3girls
+  scene_nl: Three friends are standing in a row in front of a school building, each striking a different pose.
+  scene_pos_nl: In front of a school building, kutara natsumi on the left, kutara sayaka in the center and kutara aki on the right are standing in a row, each striking a different pose.
+  scene_tags: standing in a row
+  relation_nl: kutara natsumi stands to the left of kutara sayaka, and kutara aki stands to the right of kutara sayaka.
+  chars:
+    - who: natsumi
+      pos: On the left
+      label: the girl on the left
+      pose_nl: makes a peace sign with her right hand next to her face
+    - who: sayaka
+      pos: In the center
+      label: the girl in the center
+      pose_nl: stands with her arms crossed and frowns
+    - who: aki
+      pos: On the right
+      label: the girl on the right
+      pose_nl: puts one hand on her hip and smiles shyly
+  camera_tags: cowboy shot, straight-on
+  env_tags: outdoors, school building, cherry blossoms, daytime
+  criteria: 3人。左=なつみがピースサイン、中央=さやかが腕組みで不機嫌顔、右=あきが片手を腰。
+
+- id: p03
+  title: 3人の持ち物
+  group: position
+  width: 1344
+  height: 768
+  count: 3girls
+  scene_nl: Three friends are sitting on a bench at a train station, each holding a different item.
+  scene_pos_nl: At a train station, kutara natsumi on the left, kutara sayaka in the center and kutara aki on the right are sitting on a bench, each holding a different item.
+  scene_tags: sitting, bench, holding
+  relation_nl: kutara natsumi sits to the left of kutara sayaka, and kutara aki sits to the right of kutara sayaka.
+  belongings_nl: The yellow umbrella belongs to {natsumi}, the blue balloon to {sayaka}, and the red book to {aki}.
+  chars:
+    - who: natsumi
+      pos: On the left
+      label: the girl on the left
+      pose_nl: sits and holds a closed yellow umbrella
+    - who: sayaka
+      pos: In the center
+      label: the girl in the center
+      pose_nl: sits and holds a blue balloon on a string
+    - who: aki
+      pos: On the right
+      label: the girl on the right
+      pose_nl: sits and reads a red book
+  camera_tags: full body, straight-on
+  env_tags: train station, platform, bench, evening
+  criteria: 3人がベンチに座る。左=なつみ（黄色い傘）、中央=さやか（青い風船）、右=あき（赤い本）。持ち物・服の色が他キャラに移っていないか。
+
+- id: p04
+  title: 机に並んで別々のことをする
+  group: position
+  width: 1344
+  height: 768
+  count: 2girls
+  scene_nl: Two girls are sitting next to each other at a long desk in a library, each doing something different.
+  scene_pos_nl: In a library, kutara aki on the left and kutara sayaka on the right are sitting next to each other at a long desk, each doing something different.
+  scene_tags: sitting, desk, side-by-side
+  relation_nl: kutara aki sits to the left of kutara sayaka.
+  chars:
+    - who: aki
+      pos: On the left
+      label: the girl on the left
+      pose_nl: writes in a notebook with a pencil, looking down seriously
+    - who: sayaka
+      pos: On the right
+      label: the girl on the right
+      pose_nl: has fallen asleep with her head resting on her folded arms on the desk
+  camera_tags: upper body, straight-on
+  env_tags: indoors, library, bookshelves, desk lamp, evening
+  criteria: 2人が机に並んで座る。左=あき（黒髪ボブ・そばかす・青Tシャツ）が鉛筆でノートに書く。右=さやか（金髪・赤パーカー）が机に突っ伏して寝ている。

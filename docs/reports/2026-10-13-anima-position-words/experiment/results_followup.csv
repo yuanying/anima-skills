@@ -1,0 +1,65 @@
+scene,group,method,seed,single,count,identity,action,camera,position,success,note
+p04,position,pos-words,101,0,1,1,0,1,1,0,rater_A: 左右2コマに分割 / rater_B: 左右2コマに分割
+p04,position,pos-words,202,1,1,1,1,1,1,1,
+p04,position,pos-words,303,0,1,1,0,1,1,0,rater_A: 左右2コマに分割 / rater_B: 左右2コマに分割
+p04,position,pos-words,404,0,1,1,0,1,1,0,rater_A: 左右2コマに分割 / rater_B: 左右2コマに分割
+p04,position,pos-words,505,1,1,1,1,1,1,1,
+p04,position,pos-words,606,1,1,1,1,1,1,1,
+p04,position,pos-words,707,0,1,1,0,1,1,0,rater_A: 左右2コマに分割 / rater_B: 左右2コマに分割
+p04,position,pos-words,808,0,1,1,0,1,1,0,rater_A: 左右2コマに分割 / rater_B: 左右2コマに分割
+p04,position,no-pos,101,1,1,1,1,1,1,1,
+p04,position,no-pos,202,1,1,1,1,1,1,1,
+p04,position,no-pos,303,1,1,1,0,1,1,0,rater_A: さやかが突っ伏さず座って目を閉じるだけ
+p04,position,no-pos,404,1,1,1,1,1,1,1,
+p04,position,no-pos,505,1,1,1,1,1,1,1,
+p04,position,no-pos,606,1,1,1,1,1,1,1,
+p04,position,no-pos,707,1,1,1,1,1,1,1,
+p04,position,no-pos,808,1,1,1,1,1,1,1,
+q01,position,pos-words,101,1,1,1,1,1,1,1,
+q01,position,pos-words,202,1,1,1,1,1,1,1,
+q01,position,pos-words,303,1,1,1,1,1,1,1,
+q01,position,pos-words,404,1,1,1,1,1,1,1,
+q01,position,pos-words,505,1,1,1,1,1,1,1,
+q01,position,pos-words,606,1,1,1,1,1,1,1,
+q01,position,pos-words,707,1,1,1,1,1,1,1,
+q01,position,pos-words,808,1,1,1,1,1,1,1,
+q01,position,no-pos,101,1,1,1,1,1,1,1,
+q01,position,no-pos,202,1,1,1,1,1,1,1,
+q01,position,no-pos,303,1,1,1,1,1,1,1,
+q01,position,no-pos,404,1,1,1,1,1,1,1,
+q01,position,no-pos,505,1,1,1,1,1,1,1,
+q01,position,no-pos,606,1,1,1,1,1,1,1,
+q01,position,no-pos,707,1,1,1,1,1,1,1,
+q01,position,no-pos,808,1,1,1,1,1,1,1,
+q02,position,pos-words,101,1,1,1,1,1,1,1,
+q02,position,pos-words,202,1,1,1,1,1,1,1,
+q02,position,pos-words,303,1,1,1,1,1,1,1,
+q02,position,pos-words,404,1,1,1,1,1,1,1,
+q02,position,pos-words,505,1,1,1,1,1,1,1,
+q02,position,pos-words,606,1,1,1,1,1,1,1,
+q02,position,pos-words,707,1,1,1,1,1,1,1,
+q02,position,pos-words,808,1,1,1,1,1,1,1,
+q02,position,no-pos,101,1,1,1,0,1,1,0,rater_A: なつみがシンクでなくコンロ上で皿を洗う / rater_B: なつみがシンクでなくコンロ上で皿を洗う
+q02,position,no-pos,202,1,1,1,0,1,1,0,rater_A: なつみが皿の上の人参状のものを扱い皿洗いか不明瞭 / rater_B: なつみが人参を扱っており皿洗いでない
+q02,position,no-pos,303,1,1,1,0,1,1,0,rater_A: なつみが皿に人参を盛っており皿洗いでない / rater_B: なつみが皿の人参を扱っており皿洗いでない
+q02,position,no-pos,404,1,1,1,1,1,1,1,
+q02,position,no-pos,505,1,1,1,1,1,1,1,
+q02,position,no-pos,606,1,1,1,1,1,1,1,
+q02,position,no-pos,707,1,1,1,1,1,1,1,
+q02,position,no-pos,808,1,1,1,0,1,1,0,rater_A: なつみが皿の上の人参を扱い皿洗いか不明瞭 / rater_B: なつみが皿の人参を扱っており皿洗いでない
+q03,position,pos-words,101,1,1,1,1,1,1,1,
+q03,position,pos-words,202,1,1,1,1,1,1,1,
+q03,position,pos-words,303,1,1,1,1,1,1,1,
+q03,position,pos-words,404,1,1,1,1,1,1,1,
+q03,position,pos-words,505,1,1,1,1,1,1,1,
+q03,position,pos-words,606,1,1,1,0,1,1,0,rater_A: 背景が白無地でバス停が描かれていない / rater_B: 背景が白でバス停が描かれていない
+q03,position,pos-words,707,1,1,1,0,1,1,0,rater_A: さやかがヘッドホンをしていない / rater_B: さやかがヘッドホンをしていない
+q03,position,pos-words,808,1,1,1,1,1,1,1,
+q03,position,no-pos,101,1,1,1,1,1,1,1,
+q03,position,no-pos,202,1,1,1,1,1,1,1,
+q03,position,no-pos,303,1,1,1,1,1,1,1,
+q03,position,no-pos,404,1,1,1,1,1,1,1,
+q03,position,no-pos,505,1,1,1,1,1,1,1,
+q03,position,no-pos,606,1,1,1,1,1,1,1,
+q03,position,no-pos,707,1,1,1,1,1,1,1,
+q03,position,no-pos,808,1,1,1,1,1,1,1,
