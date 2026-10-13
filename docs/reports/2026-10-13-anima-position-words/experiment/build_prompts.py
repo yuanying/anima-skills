@@ -5,6 +5,7 @@
 出力: prompts/<scene_id>/<method_id>.yaml（sdctl --prompt で読める形式）
 """
 import pathlib
+import sys
 
 import yaml
 
@@ -70,10 +71,14 @@ METHODS = {
 
 
 def main():
+    # 引数: [<シーン定義 YAML> [<出力ディレクトリ>]]。既定は scenes.yaml と prompts/
+    args = sys.argv[1:]
+    scenes_file = pathlib.Path(args[0]) if args else HERE / "scenes.yaml"
+    out = pathlib.Path(args[1]) if len(args) > 1 else HERE / "prompts"
     chars = yaml.safe_load((HERE / "characters.yaml").read_text())
-    scenes = yaml.safe_load((HERE / "scenes.yaml").read_text())
+    scenes = yaml.safe_load(scenes_file.read_text())
     for s in scenes:
-        d = HERE / "prompts" / s["id"]
+        d = out / s["id"]
         d.mkdir(parents=True, exist_ok=True)
         for mid, fn in METHODS.items():
             text = f"{LORA}\n{fn(s, chars)}"

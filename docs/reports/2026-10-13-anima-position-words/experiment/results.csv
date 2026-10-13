@@ -1,0 +1,209 @@
+scene,group,method,seed,single,count,identity,action,camera,position,success,note
+a01,action,pos-words,101,1,1,1,1,1,-,1,rater_A: 背景の机に別の本があるが受け渡しの本は1冊
+a01,action,pos-words,202,1,1,1,1,1,-,1,
+a01,action,pos-words,303,1,1,1,1,1,-,1,
+a01,action,pos-words,404,1,1,1,1,1,-,1,
+a01,action,no-pos,101,1,1,1,1,1,-,1,rater_A: 背景の机に別の本があるが受け渡しの本は1冊
+a01,action,no-pos,202,1,1,1,1,1,-,1,
+a01,action,no-pos,303,1,1,1,1,1,-,1,
+a01,action,no-pos,404,1,1,1,1,1,-,1,
+a01,action,relational,101,1,1,1,1,1,-,1,rater_A: 背景の机に別の本があるが受け渡しの本は1冊
+a01,action,relational,202,1,1,1,1,1,-,1,
+a01,action,relational,303,1,1,1,1,1,-,1,
+a01,action,relational,404,1,1,1,1,1,-,1,
+a01,action,scene-pos,101,1,1,1,1,1,-,1,rater_A: 背景の机に別の本があるが受け渡しの本は1冊
+a01,action,scene-pos,202,1,1,1,1,1,-,1,
+a01,action,scene-pos,303,1,1,1,1,1,-,1,
+a01,action,scene-pos,404,1,1,1,1,1,-,1,
+a02,action,pos-words,101,1,1,1,1,1,-,1,
+a02,action,pos-words,202,1,1,1,1,1,-,1,
+a02,action,pos-words,303,1,1,1,1,1,-,1,
+a02,action,pos-words,404,1,1,1,1,1,-,1,
+a02,action,no-pos,101,1,1,1,1,1,-,1,
+a02,action,no-pos,202,1,1,1,1,1,-,1,
+a02,action,no-pos,303,1,1,1,1,1,-,1,
+a02,action,no-pos,404,1,1,1,1,1,-,1,
+a02,action,relational,101,1,1,1,1,1,-,1,
+a02,action,relational,202,1,1,1,1,1,-,1,
+a02,action,relational,303,1,1,1,1,1,-,1,
+a02,action,relational,404,1,1,1,1,1,-,1,
+a02,action,scene-pos,101,1,1,1,1,1,-,1,
+a02,action,scene-pos,202,1,1,1,1,1,-,1,
+a02,action,scene-pos,303,1,1,1,1,1,-,1,
+a02,action,scene-pos,404,1,1,1,1,1,-,1,
+a03,action,pos-words,101,1,1,1,0,1,-,0,rater_A: あきは腕を前に出すが拳で、手を伸ばして掴もうとする動作に見えない / rater_B: あきの手が握り拳で追いかけの手伸ばしに見えない
+a03,action,pos-words,202,1,1,1,1,1,-,1,
+a03,action,pos-words,303,1,1,1,1,1,-,1,
+a03,action,pos-words,404,1,1,1,1,1,-,1,
+a03,action,no-pos,101,1,1,1,0,1,-,0,rater_A: あきは腕を前に出すが拳で、手を伸ばして掴もうとする動作に見えない / rater_B: あきの手が握り拳で追いかけの手伸ばしに見えない
+a03,action,no-pos,202,1,1,1,1,1,-,1,
+a03,action,no-pos,303,1,1,1,1,1,-,1,
+a03,action,no-pos,404,1,1,1,0,1,-,0,rater_A: あきの腕が走りの振りで拳、なつみへ手を伸ばしていない / rater_B: あきが手を伸ばしておらず並走に見える
+a03,action,relational,101,1,1,1,1,1,-,1,
+a03,action,relational,202,1,1,1,1,1,-,1,
+a03,action,relational,303,1,1,1,1,1,-,1,
+a03,action,relational,404,1,1,1,0,1,-,0,rater_A: あきの腕が走りの振りで拳、なつみへ手を伸ばしていない / rater_B: あきが手を伸ばしておらず並走に見える
+a03,action,scene-pos,101,1,1,1,1,1,-,1,
+a03,action,scene-pos,202,1,1,1,1,1,-,1,
+a03,action,scene-pos,303,1,1,1,1,1,-,1,
+a03,action,scene-pos,404,1,1,1,0,1,-,0,rater_A: あきは腕を前に出すが拳で、手を伸ばして掴もうとする動作に見えない / rater_B: あきの手が握り拳で追いかけの手伸ばしに見えない
+a04,action,pos-words,101,1,1,1,0,1,-,0,rater_A: さやかが自分の縄を持ち縄が3本 / rater_B: さやかが自分の縄を頭上に持つ・縄が3本
+a04,action,pos-words,202,1,1,1,0,1,-,0,rater_A: さやかが縄の柄を持つ・縄が複数 / rater_B: さやかが縄を持っている（縄が1本でつながらない）
+a04,action,pos-words,303,1,1,1,0,1,-,0,rater_A: さやかが縄の柄を持つ・縄が複数 / rater_B: 縄が複数・さやかも縄を持つ
+a04,action,pos-words,404,1,1,1,0,1,-,0,rater_A: さやかが縄を手に持って跳ぶ / rater_B: さやかが縄を持っている（縄が1本でつながらない）
+a04,action,no-pos,101,1,0,0,0,1,-,0,rater_A: 4人出現（さやか2人）・あきのTシャツ水色 / rater_B: 4人出現（さやかが2人）
+a04,action,no-pos,202,1,1,0,0,1,-,0,rater_A: あき不在で黒髪の赤パーカー人物・跳ぶ人が2人 / rater_B: あきが欠け黒髪の赤パーカーが出現・縄が複数
+a04,action,no-pos,303,1,1,1,0,1,-,0,rater_A: さやかが縄の柄を持つ・縄が複数 / rater_B: さやかが縄を持っている（縄が1本でつながらない）
+a04,action,no-pos,404,1,1,1,0,1,-,0,rater_A: さやかが縄を手に持つ・縄が複数 / rater_B: さやかが縄を持っている（縄が1本でつながらない）
+a04,action,relational,101,1,0,0,0,1,-,0,rater_A: 4人出現（金髪が2人・眼鏡が移る） / rater_B: 4人出現（さやかが2人）
+a04,action,relational,202,1,1,1,0,1,-,0,rater_A: さやかが縄の端を持ち回し手側になっている / rater_B: さやかが縄を持っている（縄が1本でつながらない）
+a04,action,relational,303,1,1,1,0,1,-,0,rater_A: さやかが縄を手で掴んでいる・縄が複数 / rater_B: さやかが縄を持っている（縄が1本でつながらない）
+a04,action,relational,404,1,1,1,0,1,-,0,rater_A: さやかが縄を手に持って跳ぶ / rater_B: さやかが縄を持っている（縄が1本でつながらない）
+a04,action,scene-pos,101,1,1,1,0,1,-,0,rater_A: さやかが自分の縄も頭上に持ち縄が複数 / rater_B: さやかが自分の縄を頭上に持つ・縄が1本でない
+a04,action,scene-pos,202,1,1,1,0,1,-,0,rater_A: さやかも縄の柄を持ち縄が1本につながらない / rater_B: さやかが縄を持っている（縄が1本でつながらない）
+a04,action,scene-pos,303,1,1,1,0,1,-,0,rater_A: 縄が複数・さやかも縄を持つ・あきも跳ぶ / rater_B: 縄が複数・さやかも縄を持つ・あきも跳んでいる
+a04,action,scene-pos,404,1,1,1,0,1,-,0,rater_A: さやかが自分で縄を持って跳ぶ・縄が複数 / rater_B: さやかが自分の縄を持つ・縄が複数
+c01,camera,pos-words,101,1,1,1,0,1,-,0,rater_A: なつみの手がさやかの肩（役割逆）・頭は乗らない / rater_B: なつみがさやかの肩に手を回す（役割逆）
+c01,camera,pos-words,202,1,1,1,0,1,-,0,rater_A: 頭を寄せるだけで腕を回していない / rater_B: 頭を肩に乗せず腕も回さない
+c01,camera,pos-words,303,1,1,1,0,1,-,0,rater_A: 頭を寄せるだけで腕を回していない / rater_B: 頭を寄せるのみ・腕を回さない
+c01,camera,pos-words,404,1,1,1,0,1,-,0,rater_A: 腕を回すのがなつみ側（役割逆） / rater_B: 腕を回すのがなつみ（役割逆）
+c01,camera,no-pos,101,1,1,1,0,1,-,0,rater_A: 役割逆（さやかがなつみに頭を寄せ、なつみの手がさやかの肩） / rater_B: さやかがなつみの肩に頭を乗せる（役割逆）
+c01,camera,no-pos,202,1,1,1,0,1,-,0,rater_A: 頭を寄せるだけで肩に乗せず腕も回していない / rater_B: 頭を肩に乗せず腕も回さない
+c01,camera,no-pos,303,1,1,1,0,1,-,0,rater_A: 頭を寄せるだけで腕を回していない / rater_B: 頭を寄せるのみ・腕を回さない
+c01,camera,no-pos,404,1,1,1,0,1,-,0,rater_A: 腕を回すのがなつみ側（役割逆）・頭は肩に乗らない / rater_B: 腕を回すのがなつみ（役割逆）
+c01,camera,relational,101,1,1,1,0,1,-,0,rater_A: さやかがなつみの肩に頭を乗せる（役割逆）・腕なし / rater_B: さやかがなつみの肩に頭を乗せる（役割逆）
+c01,camera,relational,202,1,1,1,0,1,-,0,rater_A: 頭を寄せるだけで肩に乗せず腕も回していない / rater_B: 頭を肩に乗せず腕も回さない
+c01,camera,relational,303,1,1,1,0,1,-,0,rater_A: 頭を寄せるだけで腕を回していない / rater_B: 頭を寄せるのみ・腕を回さない
+c01,camera,relational,404,1,1,1,0,1,-,0,rater_A: 腕を回すのがなつみ側（役割逆） / rater_B: 腕を回すのがなつみ（役割逆）
+c01,camera,scene-pos,101,1,1,1,0,1,-,0,rater_A: さやかがなつみの肩に頭を乗せる（役割逆） / rater_B: さやかがなつみの肩に頭を乗せる（役割逆）
+c01,camera,scene-pos,202,1,1,1,0,1,-,0,rater_A: 頭を寄せるだけで肩に乗せず腕も回していない / rater_B: 頭を肩に乗せず腕も回さない
+c01,camera,scene-pos,303,1,1,1,0,1,-,0,rater_A: さやかが頭を乗せなつみが腕を回す（役割逆） / rater_B: さやかが頭を乗せなつみが腕を回す（役割逆）
+c01,camera,scene-pos,404,1,1,1,0,1,-,0,rater_A: 腕を回すのがなつみ側（役割逆） / rater_B: 腕を回すのがなつみ（役割逆）
+c02,camera,pos-words,101,1,1,1,0,1,-,0,rater_A: 扇持ちのみ明確・あきは卓上のカードを触る
+c02,camera,pos-words,202,1,1,1,0,1,-,0,rater_A: 扇持ちのみ明確・あきの覗き込みは曖昧
+c02,camera,pos-words,303,1,1,1,0,0,-,0,rater_A: テーブル無し（床）・扇持ちのみ明確 / rater_B: テーブルが無く床に座る
+c02,camera,pos-words,404,1,1,1,0,1,-,0,rater_A: 扇持ちのみ明確・二人とも卓上でカードを置く
+c02,camera,no-pos,101,1,1,1,0,1,-,0,rater_A: 扇持ちのみ明確・さやかは置くだけ・あきは卓上を見る
+c02,camera,no-pos,202,1,1,0,0,1,-,0,rater_A: あきが赤パーカー（青T無し）・さやかにそばかす / rater_B: あきが赤パーカーと黒スカート
+c02,camera,no-pos,303,1,1,0,0,1,-,0,rater_A: あきが赤パーカー・さやかが水色シャツ混在 / rater_B: あきが赤パーカー・さやかが水色の服
+c02,camera,no-pos,404,1,1,0,0,1,-,0,rater_A: あきが赤パーカー・さやかが水色シャツ混在 / rater_B: あきが赤パーカー・さやかが水色の服
+c02,camera,relational,101,1,1,1,0,1,-,0,rater_A: 扇持ちのみ明確・叩きつけ／覗き込み不明
+c02,camera,relational,202,1,1,0,0,1,-,0,rater_A: あきが黒スカート・さやかにカーゴパンツ混在 / rater_B: あきが黒スカート・さやかにカーゴパンツ／さやかが叩きつけずあきも覗かない
+c02,camera,relational,303,1,1,1,0,1,-,0,rater_A: 扇持ちのみ明確・あきは自分のカードを扱う
+c02,camera,relational,404,1,1,1,0,1,-,0,rater_A: 扇持ちのみ明確・叩きつけ／覗き込み不明
+c02,camera,scene-pos,101,1,1,1,0,1,-,0,rater_A: 扇持ちのみ明確・叩きつけ／覗き込み不明
+c02,camera,scene-pos,202,1,1,1,0,1,-,0,rater_A: 扇持ちのみ明確・叩きつけ／覗き込み不明
+c02,camera,scene-pos,303,1,1,1,0,1,-,0,rater_A: 扇持ちのみ明確・あきの覗き込みは曖昧
+c02,camera,scene-pos,404,1,1,1,0,1,-,0,rater_A: 扇持ちのみ明確・あきは卓上のカードを触る
+c03,camera,pos-words,101,1,1,1,0,0,-,0,rater_A: 手前と奥のサイズ差が小さくなつみが横向き（オーバーショルダーになっていない） / rater_B: 手前と奥のサイズ差なし・なつみが横向き
+c03,camera,pos-words,202,1,1,1,1,1,-,1,
+c03,camera,pos-words,303,1,1,1,1,1,-,1,
+c03,camera,pos-words,404,1,1,1,1,1,-,1,
+c03,camera,no-pos,101,1,1,1,1,0,-,0,rater_A: あきが横顔気味で手前のサイズ差が小さい / rater_B: 手前と奥のサイズ差が小さくオーバーショルダーになっていない
+c03,camera,no-pos,202,1,1,1,1,1,-,1,
+c03,camera,no-pos,303,1,1,1,1,1,-,1,
+c03,camera,no-pos,404,1,1,1,1,1,-,1,
+c03,camera,relational,101,1,1,1,1,0,-,0,rater_A: あきが横顔気味で手前のサイズ差が小さい / rater_B: 手前と奥のサイズ差が小さくオーバーショルダーになっていない
+c03,camera,relational,202,1,1,1,1,1,-,1,
+c03,camera,relational,303,1,1,1,1,1,-,1,
+c03,camera,relational,404,1,1,1,1,1,-,1,
+c03,camera,scene-pos,101,1,1,1,1,0,-,0,rater_A: 手前と奥のサイズ差が小さい（横向かい合いの引き） / rater_B: 手前と奥のサイズ差が小さくオーバーショルダーになっていない
+c03,camera,scene-pos,202,1,1,1,1,1,-,1,
+c03,camera,scene-pos,303,1,1,1,1,1,-,1,
+c03,camera,scene-pos,404,1,1,1,1,1,-,1,
+c04,camera,pos-words,101,1,1,1,1,1,-,1,
+c04,camera,pos-words,202,1,1,0,1,1,-,0,rater_A: さやかに薄いそばかす / rater_B: さやかの頬にそばかす（あきの属性が移る）
+c04,camera,pos-words,303,1,1,1,1,0,-,0,rater_A: 画面の傾きなし / rater_B: 画面の傾きが弱くダッチアングルに見えない
+c04,camera,pos-words,404,1,1,1,1,0,-,0,rater_A: 画面の傾きが不明瞭 / rater_B: 画面の傾きが弱くダッチアングルに見えない
+c04,camera,no-pos,101,1,1,1,1,1,-,1,
+c04,camera,no-pos,202,1,0,1,1,1,-,0,rater_A: 画面外の第三者の手がさやかの手を握っている / rater_B: 手前に視点側の手が写る
+c04,camera,no-pos,303,1,1,1,1,0,-,0,rater_A: 画面の傾きなし / rater_B: 画面の傾きが弱くダッチアングルに見えない
+c04,camera,no-pos,404,1,1,1,1,0,-,0,rater_A: 画面の傾きが不明瞭 / rater_B: 画面の傾きが弱くダッチアングルに見えない
+c04,camera,relational,101,1,1,1,1,1,-,1,
+c04,camera,relational,202,1,1,0,1,1,-,0,rater_A: さやかにそばかす / rater_B: さやかの頬にそばかす（あきの属性が移る）
+c04,camera,relational,303,1,1,1,1,0,-,0,rater_A: 画面の傾きなし / rater_B: 画面の傾きが弱くダッチアングルに見えない
+c04,camera,relational,404,1,1,1,1,0,-,0,rater_A: 画面の傾きが不明瞭 / rater_B: 画面の傾きが弱くダッチアングルに見えない
+c04,camera,scene-pos,101,1,1,1,1,1,-,1,
+c04,camera,scene-pos,202,1,1,0,1,1,-,0,rater_A: さやかにそばかす / rater_B: さやかの頬にそばかす（あきの属性が移る）
+c04,camera,scene-pos,303,1,1,1,1,0,-,0,rater_A: 画面の傾きなし / rater_B: 画面の傾きが弱くダッチアングルに見えない
+c04,camera,scene-pos,404,1,1,0,1,0,-,0,rater_A: さやかにそばかす（薄い）・画面の傾きが不明瞭 / rater_B: 画面の傾きが弱くダッチアングルに見えない
+c05,camera,pos-words,101,1,1,1,0,1,-,0,rater_A: さやかもウインク（2人ともウインク）
+c05,camera,pos-words,202,1,1,1,0,1,-,0,rater_A: さやかもウインク（2人ともウインク）
+c05,camera,pos-words,303,1,1,1,0,1,-,0,rater_A: さやかもウインク（2人ともウインク）
+c05,camera,pos-words,404,1,1,1,0,1,-,0,rater_A: さやかもウインク（2人ともウインク）
+c05,camera,no-pos,101,1,1,1,0,1,-,0,rater_A: さやかもウインク（2人ともウインク）
+c05,camera,no-pos,202,1,1,1,0,1,-,0,rater_A: さやかもウインク（2人ともウインク）
+c05,camera,no-pos,303,1,1,1,0,1,-,0,rater_A: さやかもウインク（2人ともウインク）
+c05,camera,no-pos,404,1,1,1,0,1,-,0,rater_A: スマホをなつみ側が持つ・さやかもウインク / rater_B: スマホを持つのがなつみ（役割逆）
+c05,camera,relational,101,1,1,1,0,1,-,0,rater_A: さやかもウインク（2人ともウインク）
+c05,camera,relational,202,1,1,1,0,1,-,0,rater_A: さやかもウインク（2人ともウインク）
+c05,camera,relational,303,1,1,1,0,1,-,0,rater_A: さやかもウインク（2人ともウインク）
+c05,camera,relational,404,1,1,1,0,1,-,0,rater_A: スマホをなつみ側が持つ・さやかもウインク / rater_B: スマホを持つのがなつみ（役割逆）
+c05,camera,scene-pos,101,1,1,1,0,1,-,0,rater_A: さやかもウインク・スマホ写らず
+c05,camera,scene-pos,202,1,1,1,0,1,-,0,rater_A: さやかもウインク（2人ともウインク）
+c05,camera,scene-pos,303,1,1,1,1,1,-,1,
+c05,camera,scene-pos,404,1,1,1,0,1,-,0,rater_A: スマホをなつみ側が持つ・さやかもウインク / rater_B: スマホを持つのがなつみ（役割逆）
+p01,position,pos-words,101,1,1,1,1,1,1,1,
+p01,position,pos-words,202,1,1,1,1,1,1,1,
+p01,position,pos-words,303,1,1,1,1,1,1,1,
+p01,position,pos-words,404,1,1,1,1,1,1,1,
+p01,position,no-pos,101,1,1,1,1,1,1,1,
+p01,position,no-pos,202,1,1,1,1,1,1,1,
+p01,position,no-pos,303,1,1,1,1,1,1,1,
+p01,position,no-pos,404,1,1,1,1,1,1,1,
+p01,position,relational,101,1,1,1,1,1,1,1,
+p01,position,relational,202,1,1,1,1,1,1,1,
+p01,position,relational,303,1,1,1,1,1,1,1,
+p01,position,relational,404,1,1,1,1,1,1,1,
+p01,position,scene-pos,101,1,1,1,1,1,1,1,
+p01,position,scene-pos,202,1,1,1,1,1,1,1,
+p01,position,scene-pos,303,1,1,1,1,1,1,1,
+p01,position,scene-pos,404,1,1,1,1,1,1,1,
+p02,position,pos-words,101,1,1,1,1,1,1,1,
+p02,position,pos-words,202,1,1,1,1,1,1,1,
+p02,position,pos-words,303,1,1,1,1,1,1,1,
+p02,position,pos-words,404,1,1,1,1,1,1,1,
+p02,position,no-pos,101,1,1,1,1,1,1,1,
+p02,position,no-pos,202,1,1,1,1,1,1,1,
+p02,position,no-pos,303,1,1,1,1,1,1,1,
+p02,position,no-pos,404,1,1,1,1,1,1,1,
+p02,position,relational,101,1,1,1,1,1,1,1,
+p02,position,relational,202,1,1,1,1,1,1,1,
+p02,position,relational,303,1,1,1,1,1,1,1,
+p02,position,relational,404,1,1,1,1,1,1,1,
+p02,position,scene-pos,101,1,1,1,1,1,1,1,
+p02,position,scene-pos,202,1,1,1,0,1,1,0,rater_A: あきが両手を腰に当てている（片手指定） / rater_B: あきが両手を腰に当てている（片手指定）
+p02,position,scene-pos,303,1,1,1,1,1,1,1,
+p02,position,scene-pos,404,1,1,1,1,1,1,1,
+p03,position,pos-words,101,1,1,1,1,1,1,1,
+p03,position,pos-words,202,1,1,1,1,1,1,1,
+p03,position,pos-words,303,1,1,1,1,1,1,1,
+p03,position,pos-words,404,1,1,1,1,1,1,1,
+p03,position,no-pos,101,1,0,0,0,1,0,0,rater_A: さやかが2人で4人出現・さやかの片方が傘を持つ / rater_B: さやかが2人出現（4人）・複製さやかが傘
+p03,position,no-pos,202,1,1,0,0,1,1,0,rater_A: さやかが傘と風船を持ちなつみは手ぶら / rater_B: 傘をさやかが持ちなつみは手ぶら
+p03,position,no-pos,303,1,1,1,1,1,1,1,
+p03,position,no-pos,404,1,1,0,0,1,1,0,rater_A: 風船の紐がなつみ側でさやかは手ぶら・なつみの膝に本 / rater_B: なつみが本も持ち風船の紐が傘側・さやかは手ぶら
+p03,position,relational,101,1,1,0,0,1,1,0,rater_A: 黄色い傘が2本でさやかも傘を持つ / rater_B: さやかも黄色い傘を持つ
+p03,position,relational,202,1,1,0,0,1,1,0,rater_A: なつみが傘を持たず傘がさやか側にある / rater_B: 傘をさやかが持ちなつみは手ぶら
+p03,position,relational,303,1,1,1,1,1,1,1,
+p03,position,relational,404,1,1,0,0,1,1,0,rater_A: なつみが傘を持たず傘が二人の間に立つ / rater_B: 傘をなつみが持っておらずさやか側にある
+p03,position,scene-pos,101,1,1,1,1,1,1,1,
+p03,position,scene-pos,202,1,1,0,0,1,1,0,rater_A: さやかが傘と風船を持ちなつみは手ぶら / rater_B: 傘をさやかが持ちなつみは手ぶら
+p03,position,scene-pos,303,1,1,0,0,1,1,0,rater_A: 風船2個・傘をさやかが持ちなつみは手ぶら・さやかの膝に本 / rater_B: 傘と本をさやかが持ち風船2個・なつみは手ぶら
+p03,position,scene-pos,404,1,1,0,0,1,1,0,rater_A: なつみが傘を持たず膝に本・風船の持ち手不明 / rater_B: なつみが傘を持たず膝に本・傘が立てかけ
+p04,position,pos-words,101,0,1,1,0,0,1,0,rater_A: 左右2コマに分割・あきが真横向き / rater_B: 左右2コマに分割・あきが横向き
+p04,position,pos-words,202,1,1,1,1,1,1,1,
+p04,position,pos-words,303,0,1,1,0,0,1,0,rater_A: 左右2コマに分割・あきが真横向き / rater_B: 左右2コマに分割・あきが横向き
+p04,position,pos-words,404,0,1,1,0,1,1,0,rater_A: 左右2コマに分割 / rater_B: 左右2コマに分割
+p04,position,no-pos,101,1,1,1,1,1,1,1,
+p04,position,no-pos,202,1,1,1,1,1,1,1,
+p04,position,no-pos,303,1,1,1,0,1,1,0,rater_A: さやかが腕組みでうつむくだけで突っ伏していない / rater_B: さやかが机に突っ伏さず座ったまま頭を垂れる
+p04,position,no-pos,404,1,1,1,1,1,1,1,
+p04,position,relational,101,1,1,1,1,1,1,1,
+p04,position,relational,202,1,1,1,1,1,1,1,
+p04,position,relational,303,1,1,1,0,1,1,0,rater_A: さやかが腕組みでうつむくだけで突っ伏していない / rater_B: さやかが机に突っ伏さず座ったまま頭を垂れる
+p04,position,relational,404,1,1,1,1,1,1,1,
+p04,position,scene-pos,101,0,1,1,0,0,1,0,rater_A: 左右2コマに分割・あきが真横向き / rater_B: 左右2コマに分割・あきが横向き
+p04,position,scene-pos,202,1,1,1,1,1,1,1,
+p04,position,scene-pos,303,0,1,1,0,1,1,0,rater_A: 左右2コマに分割 / rater_B: 左右2コマに分割
+p04,position,scene-pos,404,0,1,1,0,1,1,0,rater_A: 左右2コマに分割 / rater_B: 左右2コマに分割
