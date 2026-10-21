@@ -1,0 +1,45 @@
+{
+  "width": 1216,
+  "height": 832,
+  "bbox_coord_space": "abs",
+  "bbox_format": "xyxy",
+  "summary": {
+    "meta": [
+      "illustration"
+    ],
+    "canvas": "single",
+    "caption": "Anime illustration of a park in autumn, orange and yellow leaves falling, a wooden bench in the center, soft evening light. The illustration fills the entire canvas edge to edge, with no white border or margin."
+  },
+  "items": [
+    {
+      "label": "object",
+      "caption": "kutara natsumi, 1girl, dark brown hair in a low ponytail with blunt bangs, glasses, grey eyes, large breasts, wearing a beige trench coat and a red scarf, sitting on the bench on the left, reading a paperback book",
+      "bbox": [
+        200,
+        160,
+        600,
+        800
+      ]
+    },
+    {
+      "label": "object",
+      "caption": "kutara aki, femboy, short black bob cut with blunt bangs, black eyes, wearing a navy duffle coat, sitting on the bench on the right, leaning on her shoulder, sleeping, eyes closed",
+      "bbox": [
+        560,
+        200,
+        980,
+        800
+      ]
+    },
+    {
+      "label": "object",
+      "caption": "wooden park bench",
+      "bbox": [
+        160,
+        520,
+        1060,
+        800
+      ]
+    }
+  ]
+}
