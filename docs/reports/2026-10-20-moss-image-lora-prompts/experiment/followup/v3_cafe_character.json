@@ -1,0 +1,45 @@
+{
+  "width": 1216,
+  "height": 832,
+  "bbox_coord_space": "abs",
+  "bbox_format": "xyxy",
+  "summary": {
+    "meta": [
+      "illustration"
+    ],
+    "canvas": "single",
+    "caption": "Anime illustration of two friends sitting face to face at a small round table by the window of a cozy cafe, warm afternoon light, coffee cups and a slice of cake on the table."
+  },
+  "items": [
+    {
+      "label": "character",
+      "caption": "kutara aki, femboy, short black bob cut with blunt bangs, black eyes, wearing a pink oversized hoodie, sitting on the left, laughing with open mouth, holding a fork",
+      "bbox": [
+        40,
+        120,
+        560,
+        832
+      ]
+    },
+    {
+      "label": "character",
+      "caption": "kutara natsumi, 1girl, dark brown hair in a low ponytail with blunt bangs, glasses, grey eyes, large breasts, wearing a grey ribbed turtleneck sweater, sitting on the right, gentle smile, holding a coffee cup with both hands",
+      "bbox": [
+        640,
+        100,
+        1180,
+        832
+      ]
+    },
+    {
+      "label": "object",
+      "caption": "small round wooden table with two coffee cups and a strawberry shortcake",
+      "bbox": [
+        380,
+        560,
+        840,
+        832
+      ]
+    }
+  ]
+}

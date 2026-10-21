@@ -1,0 +1,8 @@
+steps: 50
+cfg_scale: 3
+sampler: Euler
+scheduler: simple
+width: 1024
+height: 1024
+override_settings:
+  moss_uncond_skip_layers: "22"
